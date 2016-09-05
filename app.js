@@ -12,7 +12,7 @@ var fs = require('fs');
 
 var publicKey = fs.readFileSync('platform.rsa.pub');
 
-app.use(jwt({ secret: publicKey, algorithm: 'RS256' }).unless({ path: [/^\/public/] }));
+app.use(jwt({ secret: publicKey, algorithm: 'RS256' }).unless({ path: [/^\/api\/public/] }));
 app.use(errorhandler());
 app.use(bodyparser());
 app.use(logger());

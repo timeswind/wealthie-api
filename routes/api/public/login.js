@@ -1,4 +1,4 @@
-var Models = require('../../lib/core');
+var Models = require('../../../lib/core');
 var $User = Models.$User;
 var jwt = require('koa-jwt');
 var fs = require('fs');
