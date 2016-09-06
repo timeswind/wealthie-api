@@ -2,12 +2,12 @@ var validator = require('validator');
 var crypto = require('crypto');
 
 module.exports = {
-  "POST /api/public/signup": {
+  "POST /public/signup": {
     "request": {
       "body": checkSignupBody
     }
   },
-  "POST /api/public/login": {
+  "POST /public/login": {
     "request": {
       "body": checkSigninBody
     }
