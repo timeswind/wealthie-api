@@ -21,10 +21,7 @@ function md5 (str) {
 function checkSignupBody() {
   var body = this.request.body;
   var respond;
-  if (!body || !body.name) {
-    respond = {error: 'Please fill username'};
-  }
-  else if (!body.email || !validator.isEmail(body.email)) {
+  if (!body || !body.email || !validator.isEmail(body.email)) {
     respond = {error: 'Please fill correct email address'};
   }
   else if (!body.password) {
@@ -34,11 +31,13 @@ function checkSignupBody() {
     respond = {error: 'Two passwords do not match'};
   }
   if (respond) {
+    this.status = 400;
     this.body = respond;
     return false;
   }
   body.email = validator.trim(body.email);
   body.password = validator.trim(body.password);
+  delete body.repassword
   return true;
 }
 
@@ -52,6 +51,7 @@ function checkSigninBody() {
     respond = {error: 'Please enter the password!'};
   }
   if (respond) {
+    this.status = 400;
     this.body = respond;
     return false;
   }

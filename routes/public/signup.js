@@ -15,14 +15,19 @@ exports.post = function* () {
     return false;
   }
 
-  yield $User.addUser(data);
+  var newUser = yield $User.addUser(data);
 
-  var payload = {
-    name: data.name,
+  let payload = {
+    id: newUser.id,
     email: data.email
   };
 
-  var token = jwt.sign(payload, privateKey, {algorithm: 'RS256'});
+  let token = jwt.sign(payload, privateKey, {algorithm: 'RS256'});
 
-  this.body = {token: token};
+  this.body = {
+    success: true,
+    id: payload.id,
+    email: payload.email,
+    token: token
+  };
 };
