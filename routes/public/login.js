@@ -21,5 +21,11 @@ exports.post = function* () {
 
   var token = jwt.sign(payload, privateKey, {algorithm: 'RS256'});
   this.status = 200;
-  this.body = {token: token};
+  this.body = {
+    success: true,
+    id: userInfo.id,
+    name: userInfo.firstName + " " + userInfo.lastName,
+    email: userInfo.email,
+    token: token
+  };
 };

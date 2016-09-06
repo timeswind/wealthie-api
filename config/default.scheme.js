@@ -21,7 +21,13 @@ function md5 (str) {
 function checkSignupBody() {
   var body = this.request.body;
   var respond;
-  if (!body || !body.email || !validator.isEmail(body.email)) {
+  if (!body || !body.firstName) {
+    respond = {error: 'Please fill first name field'};
+  }
+  else if (!body.lastName) {
+    respond = {error: 'Please fill last name field'};
+  }
+  else if  (!body.email || !validator.isEmail(body.email)) {
     respond = {error: 'Please fill correct email address'};
   }
   else if (!body.password) {

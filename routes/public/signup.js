@@ -16,8 +16,9 @@ exports.post = function* () {
   }
 
   var newUser = yield $User.addUser(data);
-
+  
   let payload = {
+    name: data.firstName + " " + data.lastName,
     id: newUser.id,
     email: data.email
   };
@@ -26,6 +27,7 @@ exports.post = function* () {
 
   this.body = {
     success: true,
+    name: payload.name,
     id: payload.id,
     email: payload.email,
     token: token
