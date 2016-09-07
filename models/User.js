@@ -3,15 +3,17 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
 
 var UserSchema = new Schema({
-  firstName: { type: String },
-  lastName: { type: String },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
   email: { type: String, required: true},
   password: { type: String, required: true },
+  affiliation: { type: String },
+  role: { type: Number, required: true }, //  1 for normal user, 2 for agents, 3 for indenpend, 11 for premium user
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }
 });
 
-UserSchema.index({name: 1, email: 1});
+UserSchema.index({email: 1});
 
 // methods ======================
 // generating a hash

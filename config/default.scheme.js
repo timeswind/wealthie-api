@@ -36,12 +36,28 @@ function checkSignupBody() {
   else if (body.password !== body.repassword) {
     respond = {error: 'Two passwords do not match'};
   }
+  else if (body.isManager) {
+    if (body.isIndependent === false) {
+      if (!body.affiliation || validator.trim(body.affiliation) === "") {
+        respond = {error: 'You need to fill the affiliation field'};
+      } else {
+        body.role = 2 // 1 for client
+      }
+    } else if (body.isIndependent && body.isIndependent === true) {
+      body.role = 3 // 1 for client
+      if (body.affiliation) {
+        delete body.affiliation
+      }
+    }
+  } else {
+    body.role = 1 // 1 for client
+  }
   if (respond) {
     this.status = 400;
     this.body = respond;
     return false;
   }
-  body.email = validator.trim(body.email);
+  body.email = validator.trim(body.email).toLowerCase();
   body.password = validator.trim(body.password);
   delete body.repassword
   return true;
