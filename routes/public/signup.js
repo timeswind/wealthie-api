@@ -16,11 +16,12 @@ exports.post = function* () {
   }
 
   var newUser = yield $User.addUser(data);
-  
+
   let payload = {
     name: data.firstName + " " + data.lastName,
     id: newUser.id,
-    email: data.email
+    email: data.email,
+    role: newUser.role,
   };
 
   let token = jwt.sign(payload, privateKey, {algorithm: 'RS256'});
@@ -30,6 +31,7 @@ exports.post = function* () {
     name: payload.name,
     id: payload.id,
     email: payload.email,
+    role: payload.role,
     token: token
   };
 };
