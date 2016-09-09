@@ -24,7 +24,7 @@ exports.post = function* () {
     role: newUser.role,
   };
 
-  let token = jwt.sign(payload, privateKey, {algorithm: 'RS256'});
+  let token = jwt.sign(payload, privateKey, {algorithm: 'RS256', expiresIn: '7d'});
 
   this.body = {
     success: true,

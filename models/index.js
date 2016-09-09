@@ -10,3 +10,4 @@ mongoose.connect(config.url, function (err) {
 });
 
 exports.User = require('./User');
+exports.List = require('./List');

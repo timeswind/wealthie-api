@@ -1,6 +1,5 @@
 var validator = require('validator');
-var crypto = require('crypto');
-
+var _ = require('lodash')
 module.exports = {
   "POST /public/signup": {
     "request": {
@@ -11,11 +10,42 @@ module.exports = {
     "request": {
       "body": checkSigninBody
     }
+  },
+  "POST /protect/list": {
+    "request": {
+      "body": checkCreateListBody
+    }
   }
 };
 
-function md5 (str) {
-  return crypto.createHash('md5').update(str).digest('hex');
+function checkCreateListBody() {
+  var body = this.request.body;
+  let requiredParams = ['categories', 'phone', 'brief']
+  var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
+  // console.log(body)
+
+  if (paramsComplete) {
+    let user = this.state.user;
+    let categories = body.categories;
+    let phone = body.phone;
+    let brief = body.brief;
+    // console.log(user)
+    if (!_.inRange(body.categories.length, 1, 4)) {
+      return this.throw(400, 'You should choose at least 1 category but no more then 3')
+    }
+    else if (validator.isNull(phone)) {
+      return this.throw(400, 'Missing phone number')
+    }
+    else if (validator.isNull(brief)) {
+      return this.throw(400, 'Missing brief')
+    }
+    else {
+      return true
+    }
+  } else {
+    return this.throw(400, 'invalid params')
+  }
+
 }
 
 function checkSignupBody() {
@@ -37,13 +67,13 @@ function checkSignupBody() {
     respond = {error: 'Two passwords do not match'};
   }
   else if (body.isManager) {
-    if (body.isIndependent === false) {
+    if (body.isIndependent && body.isIndependent === false) {
       if (!body.affiliation || validator.trim(body.affiliation) === "") {
         respond = {error: 'You need to fill the affiliation field'};
       } else {
         body.role = 2 // 1 for client
       }
-    } else if (body.isIndependent && body.isIndependent === true) {
+    } else if (body.isIndependent === true) {
       body.role = 3 // 1 for client
       if (body.affiliation) {
         delete body.affiliation
@@ -51,6 +81,9 @@ function checkSignupBody() {
     }
   } else {
     body.role = 1 // 1 for client
+    delete body.affiliation
+    delete body.isIndependent
+    delete body.isManager
   }
   if (respond) {
     this.status = 400;

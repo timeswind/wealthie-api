@@ -8,7 +8,7 @@ var UserSchema = new Schema({
   email: { type: String, required: true},
   password: { type: String, required: true },
   affiliation: { type: String },
-  role: { type: Number, required: true }, //  1 for normal user, 2 for agents, 3 for indenpend, 11 for premium user
+  role: { type: Number, required: true }, //  1 for normal user, 2 for agents, 3 for independent, 11 for premium user
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }
 });

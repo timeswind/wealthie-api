@@ -15,11 +15,13 @@ exports.post = function* () {
   }
 
   var payload = {
-    name: userInfo.name,
-    email: userInfo.email
+    id: userInfo.id,
+    name: userInfo.firstName + " " + userInfo.lastName,
+    email: userInfo.email,
+    role: userInfo.role
   };
 
-  var token = jwt.sign(payload, privateKey, {algorithm: 'RS256'});
+  var token = jwt.sign(payload, privateKey, {algorithm: 'RS256', expiresIn: '7d'});
   this.status = 200;
   this.body = {
     success: true,
