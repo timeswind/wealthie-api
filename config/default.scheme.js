@@ -15,12 +15,31 @@ module.exports = {
     "request": {
       "body": checkCreateListBody
     }
+  },
+  "PUT /protect/list": {
+    "request": {
+      "body": checkEditListBody
+    }
   }
 };
+function checkEditListBody() {
+  var body = this.request.body;
+  let requiredParams = ['categories', 'phone', 'brief', 'email', 'experience', 'affiliation', 'independent']
+  var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
+
+  if (paramsComplete) {
+    body = _.pick(body, requiredParams)
+    if (!_.inRange(body.categories.length, 1, 4)) {
+      return this.throw(400, 'You should choose at least 1 category but no more then 3')
+    } else {
+      return true
+    }
+  }
+}
 
 function checkCreateListBody() {
   var body = this.request.body;
-  let requiredParams = ['categories', 'phone', 'brief']
+  let requiredParams = ['_id', 'phone', 'brief']
   var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
   // console.log(body)
 
@@ -67,7 +86,7 @@ function checkSignupBody() {
     respond = {error: 'Two passwords do not match'};
   }
   else if (body.isManager) {
-    if (body.isIndependent && body.isIndependent === false) {
+    if (body.isIndependent === false) {
       if (!body.affiliation || validator.trim(body.affiliation) === "") {
         respond = {error: 'You need to fill the affiliation field'};
       } else {

@@ -15,13 +15,15 @@ exports.post = function* () {
     return false;
   }
 
+  console.log(data)
+
   var newUser = yield $User.addUser(data);
 
   let payload = {
     name: data.firstName + " " + data.lastName,
     id: newUser.id,
     email: data.email,
-    role: newUser.role,
+    role: newUser.role
   };
 
   let token = jwt.sign(payload, privateKey, {algorithm: 'RS256', expiresIn: '7d'});

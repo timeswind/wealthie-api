@@ -12,6 +12,7 @@ exports.post = function* () {
   var userInfo = yield $User.getById(user.id)
 
   if (userInfo) {
+    data.email = userInfo.email
     if (userInfo.role === 2) {
       data.independent = false
       data.affiliation = userInfo.affiliation
@@ -39,3 +40,21 @@ exports.post = function* () {
     return this.throw(400, 'You have already listed')
   }
 };
+
+exports.put = function* () {
+  let user_id = this.state.user.id
+  let updates = this.request.body
+  let list_id = updates._id
+  delete updates._id
+  var findListAndUpdate = yield $List.update(list_id, user_id, updates)
+
+  if (findListAndUpdate) {
+    this.status = 200;
+    this.body = {
+      success: true
+    };
+    return true
+  } else {
+    return this.throw(500, 'Fail to update')
+  }
+}
