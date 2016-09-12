@@ -39,7 +39,7 @@ function checkEditListBody() {
 
 function checkCreateListBody() {
   var body = this.request.body;
-  let requiredParams = ['_id', 'phone', 'brief']
+  let requiredParams = ['categories', 'phone', 'brief']
   var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
   // console.log(body)
 
