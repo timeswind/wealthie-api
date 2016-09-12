@@ -1,5 +1,7 @@
 var validator = require('validator');
-var _ = require('lodash')
+var _ = require('lodash');
+var ObjectId = require('mongoose').Types.ObjectId;
+
 module.exports = {
   "POST /public/signup": {
     "request": {
@@ -9,6 +11,11 @@ module.exports = {
   "POST /public/login": {
     "request": {
       "body": checkSigninBody
+    }
+  },
+  "GET /public/list": {
+    "request": {
+      "query": checkValidObjectId
     }
   },
   "POST /protect/list": {
@@ -22,6 +29,20 @@ module.exports = {
     }
   }
 };
+
+function checkValidObjectId() {
+  if (_.has(this.request.query, 'id')) {
+    var list_id = this.request.query.id
+    if (ObjectId.isValid(list_id)) {
+      return true
+    } else {
+      return this.throw(400, 'Invalid ObjectId')
+    }
+  } else {
+    return this.throw(400, 'Missing query id')
+  }
+}
+
 function checkEditListBody() {
   var body = this.request.body;
   let requiredParams = ['categories', 'phone', 'brief', 'email', 'experience', 'affiliation', 'independent']
