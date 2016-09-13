@@ -1,4 +1,5 @@
 var Models = require('../../lib/core');
+var _ = require('lodash');
 var $List = Models.$List;
 var $User = Models.$User;
 
@@ -43,8 +44,13 @@ exports.post = function* () {
 
 exports.put = function* () {
   let user_id = this.state.user.id
-  let updates = this.request.body
+  var updates = this.request.body
+  updates.experience = _.filter(updates.experience, function(experience) {
+    return (experience !== null && _.has(experience, 'title') && _.has(experience, 'text'))
+  });
+
   let list_id = updates._id
+
 
   delete updates._id
   var findListAndUpdate = yield $List.update(list_id, user_id, updates)
