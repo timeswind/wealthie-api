@@ -45,11 +45,12 @@ function checkValidObjectId() {
 
 function checkEditListBody() {
   var body = this.request.body;
-  let requiredParams = ['categories', 'phone', 'brief', 'email', 'experience', 'affiliation', 'independent']
+  let requiredParams = ['_id', 'categories', 'phone', 'brief', 'email', 'experience', 'affiliation', 'address', 'loc', 'room', 'independent']
   var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
 
   if (paramsComplete) {
-    body = _.pick(body, requiredParams)
+    console.log(this.request.body)
+    this.request.body = _.pick(body, requiredParams)
     if (!_.inRange(body.categories.length, 1, 4)) {
       return this.throw(400, 'You should choose at least 1 category but no more then 3')
     } else {

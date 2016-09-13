@@ -45,9 +45,9 @@ exports.put = function* () {
   let user_id = this.state.user.id
   let updates = this.request.body
   let list_id = updates._id
+
   delete updates._id
   var findListAndUpdate = yield $List.update(list_id, user_id, updates)
-
   if (findListAndUpdate) {
     this.status = 200;
     this.body = {
