@@ -6,7 +6,7 @@ var ListSchema = new Schema({
   advisor: { type: ObjectId, ref: 'User' },
   affiliation: { type: String },
   experience: [{ title: String, text: String, _id: false}],
-  loc: { type: [Number]},
+  loc: { type: [Number] },
   address: { type: String },
   room: { type: String },
   independent: { type: Boolean, required: true },

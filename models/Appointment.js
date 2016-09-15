@@ -6,22 +6,22 @@ var AppointmentSchema = new Schema({
   advisor: { type: ObjectId, ref: 'User', required: true },
   timestamp_month: { type: Date, required: true },
   first: [{
-    index: { type: Number }, // 0-96
+    index: { type: Number }, // 0-672
     client: { type: ObjectId, ref: 'User' },
     note: { type: String }
   }],
   second: [{
-    index: { type: Number }, // 0-96
+    index: { type: Number }, // 0-672
     client: { type: ObjectId, ref: 'User' },
     note: { type: String }
   }],
   third: [{
-    index: { type: Number }, // 0-96
+    index: { type: Number }, // 0-672
     client: { type: ObjectId, ref: 'User' },
     note: { type: String }
   }],
   fourth: [{
-    index: { type: Number }, // 0-96
+    index: { type: Number }, // 0-672s
     client: { type: ObjectId, ref: 'User' },
     note: { type: String }
   }]
