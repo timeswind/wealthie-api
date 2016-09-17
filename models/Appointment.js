@@ -28,9 +28,7 @@ var AppointmentSchema = new Schema({
 });
 
 AppointmentSchema.index({
-  independent: 1,
-  catagories: 1,
-  loc: '2dsphere'
+  advisor: 1
 });
 
 module.exports = mongoose.model('Appointment', AppointmentSchema);

@@ -23,12 +23,29 @@ module.exports = {
       "body": checkCreateListBody
     }
   },
+  "POST /protect/client": {
+    "request": {
+      "body": checkCreateClientBody
+    }
+  },
   "PUT /protect/list": {
     "request": {
       "body": checkEditListBody
     }
   }
 };
+
+function checkCreateClientBody () {
+  let requiredParams = ['name']
+  var paramsComplete = _.every(requiredParams, _.partial(_.has, this.request.body));
+
+  if (paramsComplete) {
+    this.request.body = _.pick(this.request.body, ['name', 'phone', 'email'])
+    return true
+  } else {
+    return this.throw(400, 'invalid params')
+  }
+}
 
 function checkValidObjectId() {
   if (_.has(this.request.query, 'id')) {
@@ -56,6 +73,8 @@ function checkEditListBody() {
     } else {
       return true
     }
+  } else {
+    return this.throw(400, 'invalid params')
   }
 }
 
