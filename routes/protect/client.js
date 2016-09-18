@@ -19,3 +19,36 @@ exports.post = function* () {
     this.throw(500, 'Fail to add new client')
   }
 };
+
+exports.get = function* () {
+  var client_id = this.request.query.id
+
+  var client = yield $Client.getClient(client_id, "name email phone sex note")
+
+  if (client) {
+    this.status = 200
+    this.body = {
+      success: true,
+      client: client
+    }
+  } else {
+    this.throw(500, 'Fail to get client')
+  }
+};
+
+exports.patch = function* () {
+  var patch = this.request.body
+  var client_id = patch.id
+  var fatchField = patch.field
+  var newData = patch.data
+
+  var patchedClient = $Client.patch(client_id, fatchField, newData)
+
+  if (patchedClient) {
+    this.status = 200
+    this.body = {
+      success: true
+    }
+  } else {
+    this.throw(500, 'Fail to update ' + fatchField)
+  }}

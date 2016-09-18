@@ -7,12 +7,10 @@ var ClientSchema = new Schema({
   user: { type: ObjectId, ref: 'User' },
   email: { type: String },
   name: { type: String, required: true },
-  notes: { type: String },
+  note: { type: String },
   sex: { type: Number }, // 1 for male, 2 for female
   country: { type: String },
-  mobile: { type: Number },
-  home: { type: Number },
-  office: { type: Number },
+  phone: { type: Number },
   city: { type: String },
   state: { type: String },
   zip: { type: Number }
