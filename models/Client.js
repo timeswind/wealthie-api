@@ -9,6 +9,7 @@ var ClientSchema = new Schema({
   name: { type: String, required: true },
   note: { type: String },
   sex: { type: Number }, // 1 for male, 2 for female
+  categories: { type: [Number] },
   country: { type: String },
   phone: { type: Number },
   city: { type: String },
@@ -20,7 +21,8 @@ ClientSchema.index({
   advisor: 1,
   name: 1,
   email: 1,
-  sex: 1
+  sex: 1,
+  categories: 1
 });
 
 module.exports = mongoose.model('Client', ClientSchema);

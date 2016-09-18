@@ -5,7 +5,7 @@ var $Client = Models.$Client;
 exports.get = function* () {
   var advisor_id = this.state.user.id
 
-  var clients = yield $Client.getClients(advisor_id, "name email sex")
+  var clients = yield $Client.getClients(advisor_id, "name email sex categories")
 
   if (clients) {
     this.status = 200
