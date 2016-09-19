@@ -23,7 +23,7 @@ exports.post = function* () {
 exports.get = function* () {
   var client_id = this.request.query.id
 
-  var client = yield $Client.getClient(client_id, "name email phone sex note categories")
+  var client = yield $Client.getClient(client_id, "name email phone gender note categories")
 
   if (client) {
     this.status = 200

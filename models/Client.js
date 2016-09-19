@@ -8,7 +8,7 @@ var ClientSchema = new Schema({
   email: { type: String },
   name: { type: String, required: true },
   note: { type: String },
-  sex: { type: Number }, // 1 for male, 2 for female
+  gender: { type: Number }, // 1 for male, 2 for female
   categories: { type: [Number] },
   country: { type: String },
   phone: { type: Number },
