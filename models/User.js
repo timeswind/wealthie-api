@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
+var ObjectId = Schema.Types.ObjectId;
 
 var UserSchema = new Schema({
   firstName: { type: String, required: true },
@@ -10,6 +11,8 @@ var UserSchema = new Schema({
   password: { type: String, required: true },
   affiliation: { type: String },
   role: { type: Number, required: true }, //  1 for normal user, 2 for agents, 3 for independent, 11 for premium user
+  balance: { type: Number },
+  pendingTransactions: [{ type: ObjectId }],
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }
 });
