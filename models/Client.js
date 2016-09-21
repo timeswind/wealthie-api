@@ -5,13 +5,23 @@ var ObjectId = Schema.Types.ObjectId;
 var ClientSchema = new Schema({
   advisor: { type: ObjectId, ref: 'User', required: true },
   user: { type: ObjectId, ref: 'User' },
-  email: { type: String },
   name: { type: String, required: true },
-  note: { type: String },
+  phone: { type: Number },
+  email: { type: String },
   gender: { type: Number }, // 1 for male, 2 for female
   categories: { type: [Number] },
+  education: { type: String },
+  age: { type: Number },
+  married: { type: Boolean },
+  childrens: { type: Number },
+  job: { type: String },
+  income: { type: String },
+  debts: [{
+    name: { type: String },
+    detail: { type: String }
+  }],
+  note: { type: String },
   country: { type: String },
-  phone: { type: Number },
   city: { type: String },
   state: { type: String },
   zip: { type: Number }
