@@ -23,10 +23,14 @@ exports.get = function* () {
       console.log(token)
       console.log(userInfo.email)
 
+      url = "https://wealthie.co/verify-email/" + token
+
+      var emailContent = "<p>Click or copy the following link to browser to verify your email</p><a href=\'" + url + "\'>" + url + "</a>"
+
       var from_email = new helper.Email("wealthie@wealthie.co")
       var to_email = new helper.Email(userInfo.email)
       var subject = "Sending with SendGrid is Fun"
-      var content = new helper.Content("text/plain", "and easy to do anywhere, even with Node.js")
+      var content = new helper.Content("text/html", emailContent)
       var mail = new helper.Mail(from_email, subject, to_email, content)
 
       var request = sg.emptyRequest({
@@ -35,45 +39,35 @@ exports.get = function* () {
         body: mail.toJSON()
       });
 
-      var sendEmailRequest = yield sg.API(request)
 
-      var Emailverify = yield $Emailverify.addOne(data)
+      var Emailverify = yield $Emailverify.findOne(userInfo.id, userInfo.email)
 
-      if (Emailverify && sendEmailRequest) {
-        this.status = 200
-        this.body = {
-          success: true,
-          Emailverify: Emailverify
+      if (!Emailverify) {
+        Emailverify = yield $Emailverify.addOne(data)
+        var sendEmailRequest = yield sg.API(request)
+        if (Emailverify && sendEmailRequest) {
+          this.status = 200
+          this.body = {
+            success: true
+          }
+        } else {
+          this.throw(500, 'Failed')
         }
       } else {
-        this.throw(500, 'Failed')
+        Emailverify.token = token;
+        var updatedEmailverify = yield Emailverify.save();
+        var sendEmailRequest = yield sg.API(request)
+        if (updatedEmailverify && sendEmailRequest) {
+          this.status = 200
+          this.body = {
+            success: true
+          }
+        } else {
+          this.throw(500, 'Failed')
+        }
       }
     }
   } else {
     this.throw(500, 'User account do not exist')
   }
 };
-
-exports.post = function* () {
-  var token = this.request.body.token
-  var email = this.request.body.email
-  var emailverify = yield $Emailverify.findOneByToken(token)
-  var userInfo = yield $User.getUserByEmail(email)
-
-  if (emailverify && userInfo) {
-    if (emailverify.email === email && emailverify.token === token) {
-      yield emailverify.remove()
-      userInfo.verify = true
-      yield userInfo.save()
-      this.status = 200
-      this.body = {
-        success: true,
-        verify: true
-      }
-    } else {
-      this.throw(404, 'Failed to verify email');
-    }
-  } else {
-    this.throw(404, 'Failed to verify email');
-  }
-}
