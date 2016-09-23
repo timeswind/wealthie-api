@@ -12,3 +12,4 @@ mongoose.connect(config.url, function (err) {
 exports.User = require('./User');
 exports.List = require('./List');
 exports.Client = require('./Client');
+exports.Emailverify = require('./Emailverify');

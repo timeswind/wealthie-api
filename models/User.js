@@ -12,7 +12,7 @@ var UserSchema = new Schema({
   affiliation: { type: String },
   role: { type: Number, required: true }, //  1 for normal user, 2 for agents, 3 for independent, 11 for premium user
   balance: { type: Number },
-  pendingTransactions: [{ type: ObjectId }],
+  pendingTransactions: [{ type: ObjectId, ref: "Transaction" }],
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }
 });
