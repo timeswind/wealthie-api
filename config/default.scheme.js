@@ -32,8 +32,25 @@ module.exports = {
     "request": {
       "body": checkEditListBody
     }
+  },
+  "POST /protect/appointment": {
+    "request": {
+      "body": checkAddAppointmentbody
+    }
   }
 };
+
+function checkAddAppointmentbody () {
+  let requiredParams = ['client', 'date', 'start', 'end'];
+  var paramsComplete = _.every(requiredParams, _.partial(_.has, this.request.body));
+
+  if (paramsComplete) {
+    this.request.body = _.pick(this.request.body, ['client', 'date', 'start', 'end', 'note'])
+    return true
+  } else {
+    return this.throw(400, 'invalid params')
+  }
+}
 
 function checkCreateClientBody () {
   let requiredParams = ['name']

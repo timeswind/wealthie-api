@@ -5,7 +5,7 @@ var $Appointment = Models.$Appointment;
 exports.post = function* () {
   var newAppointmentData = this.request.body
   var advisor_id = this.state.user.id
-  newClientData['advisor'] = advisor_id
+  newAppointmentData['advisor'] = advisor_id
 
   var newAppointment = yield $Appointment.addOne(newAppointmentData)
 

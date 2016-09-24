@@ -1,6 +1,7 @@
 var Models = require('../../lib/core');
 var _ = require('lodash');
 var $Client = Models.$Client;
+var $Appointment = Models.$Appointment;
 
 exports.post = function* () {
   var newClientData = this.request.body
@@ -24,12 +25,15 @@ exports.get = function* () {
   var client_id = this.request.query.id
 
   var client = yield $Client.getClient(client_id, "name email phone gender married note categories age childrens job income")
-
+  var appointments = yield $Appointment.findByClientId(client_id)
   if (client) {
     this.status = 200
     this.body = {
       success: true,
       client: client
+    }
+    if (appointments && appointments.length > 0) {
+      this.body['appointments'] = appointments
     }
   } else {
     this.throw(500, 'Fail to get client')
