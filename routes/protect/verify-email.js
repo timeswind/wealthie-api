@@ -29,7 +29,7 @@ exports.get = function* () {
 
       var from_email = new helper.Email("wealthie@wealthie.co")
       var to_email = new helper.Email(userInfo.email)
-      var subject = "Sending with SendGrid is Fun"
+      var subject = "Verify your email on Wealthie.co"
       var content = new helper.Content("text/html", emailContent)
       var mail = new helper.Mail(from_email, subject, to_email, content)
 
@@ -41,7 +41,7 @@ exports.get = function* () {
 
 
       var Emailverify = yield $Emailverify.findOne(userInfo.id, userInfo.email)
-
+      console.log(Emailverify)
       if (!Emailverify) {
         Emailverify = yield $Emailverify.addOne(data)
         var sendEmailRequest = yield sg.API(request)

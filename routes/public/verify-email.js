@@ -6,7 +6,8 @@ var $Emailverify = Models.$Emailverify;
 exports.post = function* () {
   var token = this.request.body.token
   var emailverify = yield $Emailverify.findOneByToken(token)
-
+  console.log(token)
+  console.log(emailverify)
   if (emailverify && emailverify.token === token) {
     var email = emailverify.email
     var userInfo = yield $User.getUserByEmail(email)
