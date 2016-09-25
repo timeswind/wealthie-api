@@ -4,8 +4,11 @@ var ObjectId = Schema.Types.ObjectId;
 
 var CalendarSchema = new Schema({
   advisor: { type: ObjectId, ref: 'User', required: true },
-  timestamp: { type: Date, required: true }, // month
-  appointments: [{ type: ObjectId, ref: 'Appointment' }]
+  month: { type: Date, required: true }, // month
+  available: [{
+    from: { type: Date },
+    to: { type: Date }
+  }]
 });
 
 CalendarSchema.index({
