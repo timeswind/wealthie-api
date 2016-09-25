@@ -8,7 +8,7 @@ exports.get = function* () {
 
   var userInfo = yield $User.getById(user.id, "firstName lastName role affiliation email verify")
   var listInfo = yield $List.getByUserId(user.id, "phone email brief categories independent affiliation experience loc address room")
-  var appointmentInfo = yield $Appointment.findByMonth("populate", user.id)
+  var appointmentInfo = yield $Appointment.findByMonth({populate: true}, user.id)
   this.body = {}
   if (listInfo) {
     if (listInfo.loc === undefined) {
