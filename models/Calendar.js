@@ -4,16 +4,17 @@ var ObjectId = Schema.Types.ObjectId;
 
 var CalendarSchema = new Schema({
   advisor: { type: ObjectId, ref: 'User', required: true },
-  month: { type: Date, required: true }, // month
+  month: { type: Number, required: true }, // month 201601
   available: [{
-    from: { type: Date },
-    to: { type: Date }
+    day: { type: Number }, // monday to sunday
+    from: { type: Number }, // 0 - 1440 (24*60)(a day)
+    to: { type: Number }, // 0 - 1440 (24*60)(a day)
   }]
 });
 
 CalendarSchema.index({
   advisor: 1,
-  timestamp: 1
+  month: 1
 });
 
 module.exports = mongoose.model('Calendar', CalendarSchema);
