@@ -1,4 +1,5 @@
 var app = require('koa')();
+var sentry = new raven.Client('https://b03d70e23cb849e1aa7c90f17fb9ace0:81af625093254b92b6e92bb8469e3818@sentry.io/101580');
 var logger = require('koa-logger');
 var bodyparser = require('koa-bodyparser');
 var errorhandler = require('koa-errorhandler');
@@ -9,9 +10,11 @@ var config = require('config-lite');
 var core = require('./lib/core');
 var jwt = require('koa-jwt');
 var fs = require('fs');
-
-
 var publicKey = fs.readFileSync('platform.rsa.pub');
+
+app.on('error', function(err) {
+  sentry.captureException(err);
+});
 
 app.use(jwt({ secret: publicKey, algorithm: 'RS256' }).unless({ path: [/^\/public/] }));
 app.use(errorhandler());
