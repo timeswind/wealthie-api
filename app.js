@@ -17,6 +17,19 @@ app.on('error', function(err) {
   sentry.captureException(err);
 });
 
+app.use(function *(next){
+  if (this.headers.authorization) {
+    let token = this.headers.authorization
+    if (token.substring(0, 7) !== 'Bearer ') {
+      this.status = 400;
+      this.body = 'invalid token format';
+    } else {
+      yield next
+    }
+  } else {
+    yield next
+  }
+});
 app.use(jwt({ secret: publicKey, algorithm: 'RS256' }).unless({ path: [/^\/public/] }));
 app.use(errorhandler());
 app.use(bodyparser());

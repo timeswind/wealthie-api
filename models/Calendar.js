@@ -7,6 +7,7 @@ var CalendarSchema = new Schema({
   month: { type: Number, required: true }, // month 201601
   available: [{
     day: { type: Number }, // monday to sunday
+    date: { type: Date, required: false }, // optional
     from: { type: Number }, // 0 - 1440 (24*60)(a day)
     to: { type: Number }, // 0 - 1440 (24*60)(a day)
   }]

@@ -8,6 +8,7 @@ exports.post = function* () {
   var newCalendarEvent = this.request.body
 
   var currentMonthCalendar = yield $Calendar.getCalendar(advisor_id, currentMonthCode)
+  console.log(currentMonthCalendar)
   if (currentMonthCalendar) {
     currentMonthCalendar.available.push({
       day: newCalendarEvent.day,
@@ -63,5 +64,20 @@ exports.get = function* () {
       }
     }
   }
-
 };
+
+exports.delete = function* () {
+
+  console.log(this.query)
+  let advisor_id = this.state.user.id
+  let type = this.query.type
+  let calendar_id = this.query.calendarId
+  let event_id = this.query.eventId
+  //
+  var updatedCalendar = yield $Calendar.deleteEvent(advisor_id, calendar_id, event_id)
+  this.status = 200
+  this.body = {
+    success: true,
+    calendar: updatedCalendar
+  }
+}
