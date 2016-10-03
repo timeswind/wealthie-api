@@ -71,10 +71,11 @@ exports.delete = function* () {
   console.log(this.query)
   let advisor_id = this.state.user.id
   let type = this.query.type
-  let calendar_id = this.query.calendarId
-  let event_id = this.query.eventId
-  //
+  let calendar_id = this.query.calendar_id
+  let event_id = this.query.event_id
+
   var updatedCalendar = yield $Calendar.deleteEvent(advisor_id, calendar_id, event_id)
+
   this.status = 200
   this.body = {
     success: true,
