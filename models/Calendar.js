@@ -4,7 +4,7 @@ var ObjectId = Schema.Types.ObjectId;
 
 var CalendarSchema = new Schema({
   advisor: { type: ObjectId, ref: 'User', required: true },
-  month: { type: Number, required: true }, // month 201601
+  month: { type: Number, required: true }, // month code 201601
   available: [{
     day: { type: Number }, // monday to sunday
     date: { type: Date, required: false }, // optional

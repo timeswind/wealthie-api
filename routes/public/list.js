@@ -1,6 +1,7 @@
 var Models = require('../../lib/core');
 var $List = Models.$List;
 var $User = Models.$User;
+var $Calendar = Models.$Calendar;
 
 exports.get = function* () {
   let idType = this.request.query.type
@@ -11,9 +12,7 @@ exports.get = function* () {
     var listInfo = yield $List.getByAdvisorId(advisor_id, "independent affiliation categories brief phone email experience address loc advisor")
     if (listInfo) {
       let advisor_id = listInfo.advisor
-      console.log(listInfo)
       var advisorInfo = yield $User.getById(advisor_id, "firstName lastName")
-      console.log(advisorInfo)
       if (advisorInfo) {
         this.status = 200;
         this.body = {
@@ -35,9 +34,11 @@ exports.get = function* () {
     var listInfo = yield $List.getById(list_id, "independent affiliation categories brief phone email experience address loc advisor")
     if (listInfo) {
       let advisor_id = listInfo.advisor
-      console.log(listInfo)
+      let currentMonthCode = parseInt(new Date().getFullYear()+("0" + (new Date().getMonth() + 1)).slice(-2))
+
       var advisorInfo = yield $User.getById(advisor_id, "firstName lastName")
-      console.log(advisorInfo)
+      var calendarInfo = yield $Calendar.getCalendar(advisor_id, currentMonthCode)
+
       if (advisorInfo) {
         this.status = 200;
         this.body = {
@@ -45,6 +46,9 @@ exports.get = function* () {
           listInfo: listInfo,
           advisorInfo: advisorInfo
         };
+        if (calendarInfo) {
+          this.body['calendar'] = calendarInfo
+        }
         return true
       } else {
         this.throw(404, 'advisorInfo do not exist')
