@@ -10,7 +10,7 @@ var UserSchema = new Schema({
   verify: { type: Boolean, default: false },
   password: { type: String, required: true },
   affiliation: { type: String },
-  role: { type: Number, required: true }, //  1 for normal user, 2 for agents, 3 for independent, 11 for premium user
+  role: { type: Number, required: true }, //  1 for normal user, 2 for agents, 3 for independent, 11 for premium user, 000 for admin, 001 for blog manager
   balance: { type: Number },
   pendingTransactions: [{ type: ObjectId, ref: "Transaction" }],
   created_at: { type: Date, default: Date.now },

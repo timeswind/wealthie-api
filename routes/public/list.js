@@ -22,11 +22,21 @@ exports.get = function* () {
         };
         return true
       } else {
-        this.throw(404, 'advisorInfo do not exist')
+        this.status = 404;
+        this.body = {
+          success: false,
+          listInfo: null,
+          advisorInfo: null
+        };
       }
 
     } else {
-      this.throw(404, 'listInfo do not exist')
+      this.status = 404;
+      this.body = {
+        success: false,
+        listInfo: null,
+        advisorInfo: null
+      };
     }
   } else {
     var list_id = this.request.query.id
@@ -51,11 +61,21 @@ exports.get = function* () {
         }
         return true
       } else {
-        this.throw(404, 'advisorInfo do not exist')
+        this.status = 404;
+        this.body = {
+          success: false,
+          listInfo: null,
+          advisorInfo: null
+        };
       }
 
     } else {
-      this.throw(404, 'listInfo do not exist')
+      this.status = 404;
+      this.body = {
+        success: false,
+        listInfo: null,
+        advisorInfo: null
+      };
     }
   }
 

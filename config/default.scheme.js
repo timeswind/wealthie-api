@@ -170,7 +170,7 @@ function checkValidObjectId() {
 
 function checkEditListBody() {
   var body = this.request.body;
-  let requiredParams = ['_id', 'categories', 'phone', 'brief', 'email', 'experience', 'affiliation', 'address', 'loc', 'room', 'independent']
+  let requiredParams = ['_id', 'categories', 'phone', 'brief', 'email', 'experience', 'address', 'loc', 'room', 'independent']
   var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
 
   if (paramsComplete) {

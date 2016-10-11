@@ -14,11 +14,6 @@ var ListSchema = new Schema({
   phone: { type: Number, required: true },
   email: { type: String, required: true },
   brief: { type: String },
-  calendar: [{ // weekly
-    index: { type: Number }, // 0-672
-    note: { type: String }
-  }],
-  appointment: { type: ObjectId, ref: 'Appointment' },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }
 });

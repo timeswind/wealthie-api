@@ -15,3 +15,4 @@ exports.Client = require('./Client');
 exports.Emailverify = require('./Emailverify');
 exports.Appointment = require('./Appointment');
 exports.Calendar = require('./Calendar');
+exports.Siteblog = require('./Siteblog');
