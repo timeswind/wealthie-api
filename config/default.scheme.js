@@ -68,7 +68,11 @@ function checkGetCalendarQueryForPublicApi() {
   if (paramsComplete && _.isNumber(parseInt(query.year)) && parseInt(query.year).toString().length === 4 && _.isNumber(parseInt(query.month)) && _.inRange(parseInt(query.month).toString().length, 1, 3) &&ObjectId.isValid(this.request.query.advisor_id)) {
     return true
   } else {
-    return this.throw(400, 'invalid params')
+    this.status = 400
+    this.body = {
+      error: 'invalid params'
+    }
+    return false
   }
 }
 
@@ -78,7 +82,11 @@ function checkGetCalendarQuery() {
     if (_.isNumber(parseInt(query.year)) && parseInt(query.year).toString().length === 4 && _.isNumber(parseInt(query.month)) && _.inRange(parseInt(query.month).toString().length, 1, 3)) {
       return true
     } else {
-      return this.throw(400, 'invalid params')
+      this.status = 400
+      this.body = {
+        error: 'invalid params'
+      }
+      return false
     }
   } else if (!(_.has(query, 'year') || _.has(query, 'month'))) {
     return true
@@ -91,7 +99,11 @@ function checkDeleteOfficeTimeBody() {
   if (paramsComplete && _.isString(this.request.query.type) && ObjectId.isValid(this.request.query.calendar_id) && ObjectId.isValid(this.request.query.event_id)) {
     return true
   } else {
-    return this.throw(400, 'invalid params')
+    this.status = 400
+    this.body = {
+      error: 'invalid params'
+    }
+    return false
   }
 }
 
@@ -111,7 +123,11 @@ function checkAddOfficeTimeBody() {
       if (_.inRange(day, 1, 8) && _.inRange(from, 0, 1441) && _.inRange(to, 0, 1441) && from < to && monthcodeValid) {
         return true
       } else {
-        return this.throw(400, 'invalid params')
+        this.status = 400
+        this.body = {
+          error: 'invalid params'
+        }
+        return false
       }
     } else {
       this.request.body = _.pick(this.request.body, requiredParams)
@@ -122,12 +138,20 @@ function checkAddOfficeTimeBody() {
       if (_.inRange(day, 1, 8) && _.inRange(from, 0, 1441) && _.inRange(to, 0, 1441) && from < to) {
         return true
       } else {
-        return this.throw(400, 'invalid params')
+        this.status = 400
+        this.body = {
+          error: 'invalid params'
+        }
+        return false
       }
     }
 
   } else {
-    return this.throw(400, 'invalid params')
+    this.status = 400
+    this.body = {
+      error: 'invalid params'
+    }
+    return false
   }
 }
 
@@ -139,7 +163,11 @@ function checkAddAppointmentbody () {
     this.request.body = _.pick(this.request.body, ['client', 'date', 'start', 'end', 'note'])
     return true
   } else {
-    return this.throw(400, 'invalid params')
+    this.status = 400
+    this.body = {
+      error: 'invalid params'
+    }
+    return false
   }
 }
 
@@ -151,7 +179,11 @@ function checkCreateClientBody () {
     this.request.body = _.pick(this.request.body, ['name', 'phone', 'email'])
     return true
   } else {
-    return this.throw(400, 'invalid params')
+    this.status = 400
+    this.body = {
+      error: 'invalid params'
+    }
+    return false
   }
 }
 
@@ -161,10 +193,18 @@ function checkValidObjectId() {
     if (ObjectId.isValid(list_id)) {
       return true
     } else {
-      return this.throw(400, 'Invalid ObjectId')
+      this.status = 400
+      this.body = {
+        error: 'Invalid ObjectId'
+      }
+      return false
     }
   } else {
-    return this.throw(400, 'Missing query id')
+    this.status = 400
+    this.body = {
+      error: 'Missing query id'
+    }
+    return false
   }
 }
 
@@ -177,12 +217,20 @@ function checkEditListBody() {
     console.log(this.request.body)
     this.request.body = _.pick(body, ['_id', 'categories', 'phone', 'brief', 'email', 'experience', 'loc', 'address', 'room', 'independent'])
     if (!_.inRange(body.categories.length, 1, 4)) {
-      return this.throw(400, 'You should choose at least 1 category but no more then 3')
+      this.status = 400
+      this.body = {
+        error: 'You should choose at least 1 category but no more then 3'
+      }
+      return false
     } else {
       return true
     }
   } else {
-    return this.throw(400, 'invalid params')
+    this.status = 400
+    this.body = {
+      error: 'invalid params'
+    }
+    return false
   }
 }
 
@@ -199,19 +247,35 @@ function checkCreateListBody() {
     let brief = body.brief;
     // console.log(user)
     if (!_.inRange(body.categories.length, 1, 4)) {
-      return this.throw(400, 'You should choose at least 1 category but no more then 3')
+      this.status = 400
+      this.body = {
+        error: 'You should choose at least 1 category but no more then 3'
+      }
+      return false
     }
     else if (validator.isNull(phone)) {
-      return this.throw(400, 'Missing phone number')
+      this.status = 400
+      this.body = {
+        error: 'Missing phone number'
+      }
+      return false
     }
     else if (validator.isNull(brief)) {
-      return this.throw(400, 'Missing brief')
+      this.status = 400
+      this.body = {
+        error: 'Missing brief'
+      }
+      return false
     }
     else {
       return true
     }
   } else {
-    return this.throw(400, 'invalid params')
+    this.status = 400
+    this.body = {
+      error: 'invalid params'
+    }
+    return false
   }
 
 }
@@ -277,8 +341,9 @@ function checkSigninBody() {
     this.status = 400;
     this.body = respond;
     return false;
+  } else {
+    body.email = validator.trim(body.email);
+    body.password = validator.trim(body.password);
+    return true;
   }
-  body.email = validator.trim(body.email);
-  body.password = validator.trim(body.password);
-  return true;
 }
