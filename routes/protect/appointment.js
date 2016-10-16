@@ -16,6 +16,10 @@ exports.post = function* () {
       newAppointment: newAppointment
     }
   } else {
-    this.throw(500, 'Fail to add new client')
+    this.status = 500
+    this.body = {
+      success: false,
+      newAppointment: null
+    }
   }
 };

@@ -14,6 +14,10 @@ exports.get = function* () {
       clients: clients
     }
   } else {
-    this.throw(500, 'Fail to get clients')
+    this.status = 404
+    this.body = {
+      success: false,
+      clients: null
+    }
   }
 };

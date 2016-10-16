@@ -57,8 +57,43 @@ module.exports = {
     "request": {
       "query": checkDeleteOfficeTimeBody
     }
-  }
+  },
+  "POST /protect/feedback/template": {
+    "request": {
+      "body": checkNewTemplateBody
+    }
+  },
 };
+
+function checkNewTemplateBody () {
+  let requiredParams = ['title', 'fields'];
+  var paramsComplete = _.every(requiredParams, _.partial(_.has, this.request.body));
+  if (paramsComplete) {
+    // var errors = {}
+    this.request.body.fields = this.request.body.fields.map((field)=>{
+      var obj = {}
+      let requiredFieldParams = ['question', 'type']
+      if (_.every(requiredFieldParams, _.partial(_.has, field))) {
+        obj['question'] = field['question']
+        obj['type'] = field['type']
+        if (field['type'] === 'rate') {
+          obj['rates'] = field['rates']
+        } else if (field['type'] === 'mc') {
+          obj['choices'] = field['choices']
+        }
+      }
+
+      return obj
+    })
+    return true
+  } else {
+    this.status = 400
+    this.body = {
+      error: 'invalid params'
+    }
+    return false
+  }
+}
 
 function checkGetCalendarQueryForPublicApi() {
   let requiredParams = ['year', 'month', 'advisor_id'];
