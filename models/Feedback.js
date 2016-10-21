@@ -7,6 +7,7 @@ var FeedbackSchema = new Schema({
   client: { type: ObjectId, ref: "Client", require: true },
   user: { type: ObjectId, ref: 'User' },
   advisor: { type: ObjectId, ref: "User", require: true },
+  name: { type: String }, // if user didn't login, leave the name
   template: { type: ObjectId, ref: "FeedbackTemplate", require: true },
   answers: [{
     field: ObjectId,

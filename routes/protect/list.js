@@ -6,8 +6,7 @@ var $User = Models.$User;
 exports.post = function* () {
   var data = this.request.body
   let user = this.state.user
-  // console.log(data)
-  // console.log(user)
+
   data.advisor = user.id
 
   var userInfo = yield $User.getById(user.id)
@@ -21,7 +20,11 @@ exports.post = function* () {
       data.independent = true
     }
   } else {
-    this.throw(500, 'User account do not exist')
+    this.status = 500;
+    this.body = {
+      success: false,
+      error: "User account don't exist"
+    };
   }
 
   var queryUserList = yield $List.checkUserListExist(user.id)
@@ -35,10 +38,18 @@ exports.post = function* () {
       };
       return true
     } else {
-      return this.throw(500, 'Something went wrong')
+      this.status = 500;
+      this.body = {
+        success: false,
+        error: "Something went wrong"
+      };
     }
   } else {
-    return this.throw(400, 'You have already listed')
+    this.status = 400;
+    this.body = {
+      success: false,
+      error: "You have already listed"
+    };
   }
 };
 
@@ -59,8 +70,11 @@ exports.put = function* () {
     this.body = {
       success: true
     };
-    return true
   } else {
-    return this.throw(500, 'Fail to update')
+    this.status = 500;
+    this.body = {
+      success: false,
+      error: "Fail to update"
+    };
   }
 }

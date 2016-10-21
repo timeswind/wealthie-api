@@ -12,7 +12,11 @@ exports.get = function* () {
 
   if (userInfo) {
     if (userInfo.verify === true) {
-      this.throw(400, 'Email already verified')
+      this.status = 400;
+      this.body = {
+        success: false,
+        error: "Email already verified"
+      };
     } else {
       var token = crypto.randomBytes(32).toString('hex');
       var data = {
@@ -51,7 +55,11 @@ exports.get = function* () {
             success: true
           }
         } else {
-          this.throw(500, 'Failed')
+          this.status = 500;
+          this.body = {
+            success: false,
+            error: "Failed"
+          };
         }
       } else {
         Emailverify.token = token;
@@ -63,11 +71,19 @@ exports.get = function* () {
             success: true
           }
         } else {
-          this.throw(500, 'Failed')
+          this.status = 500;
+          this.body = {
+            success: false,
+            error: "Failed"
+          };
         }
       }
     }
   } else {
-    this.throw(500, 'User account do not exist')
+    this.status = 500;
+    this.body = {
+      success: false,
+      error: "User account do not exist"
+    };
   }
 };

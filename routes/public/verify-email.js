@@ -21,9 +21,17 @@ exports.post = function* () {
         verify: true
       }
     } else {
-      this.throw(404, 'Failed to verify email');
+      this.status = 400
+      this.body = {
+        success: false,
+        error: 'Failed to verify email'
+      }
     }
   } else {
-    this.throw(404, 'Failed to verify email');
+    this.status = 400
+    this.body = {
+      success: false,
+      error: 'Failed to verify email'
+    }
   }
 }

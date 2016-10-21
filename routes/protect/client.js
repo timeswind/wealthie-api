@@ -17,7 +17,11 @@ exports.post = function* () {
       newClient: newClient
     }
   } else {
-    this.throw(500, 'Fail to add new client')
+    this.status = 500
+    this.body = {
+      success: false,
+      error: 'Fail to add new client'
+    }
   }
 };
 
@@ -36,7 +40,11 @@ exports.get = function* () {
       this.body['appointments'] = appointments
     }
   } else {
-    this.throw(500, 'Fail to get client')
+    this.status = 500
+    this.body = {
+      success: false,
+      error: 'Fail to get client'
+    }
   }
 };
 
@@ -54,5 +62,9 @@ exports.patch = function* () {
       success: true
     }
   } else {
-    this.throw(500, 'Fail to update ' + fatchField)
+    this.status = 500
+    this.body = {
+      success: false,
+      error: 'Fail to update ' + fatchField
+    }
   }}
