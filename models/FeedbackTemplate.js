@@ -8,14 +8,24 @@ var FeedbackTemplateQuestionSchema = new Schema({
   question: { type: String, require: true },
   type: { type: String, require: true },
   choices: { type: [String], require: false },
-  rates: { type: [Number], require: false }
+  rates: { type: [Number], require: false },
+  labels: { type: [String], require: false }
+
+});
+
+var FeedbackStatisticSchema = new Schema({
+
+  fid: { type: ObjectId, require: true },
+  analysis: { type: String, require: true }
 
 });
 
 var FeedbackTemplateSchema = new Schema({
-  advisor: { type: ObjectId, ref: "advisor", require: true },
+  advisor: { type: ObjectId, ref: "User", require: true },
   title: { type: String, require: true },
+  description: { type: String, require: false },
   fields: [FeedbackTemplateQuestionSchema],
+  statistic: [FeedbackStatisticSchema],
   updated_at: { type: Date, default: Date.now },
   created_at: { type: Date, default: Date.now }
 });

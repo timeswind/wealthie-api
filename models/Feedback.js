@@ -1,7 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
-var Mixed = Schema.Types.Mixed
+
+var FeedbackResponseSchema = new Schema({
+  fid: { type: ObjectId, required: true },
+  data: { type: String, requried: true }
+})
 
 var FeedbackSchema = new Schema({
   client: { type: ObjectId, ref: "Client", require: true },
@@ -9,10 +13,7 @@ var FeedbackSchema = new Schema({
   advisor: { type: ObjectId, ref: "User", require: true },
   name: { type: String }, // if user didn't login, leave the name
   template: { type: ObjectId, ref: "FeedbackTemplate", require: true },
-  answers: [{
-    field: ObjectId,
-    data: [Mixed]
-  }],
+  responses: [FeedbackResponseSchema],
   complete: { type: Boolean, default: false },
   updated_at: { type: Date, default: Date.now },
   created_at: { type: Date, default: Date.now }
