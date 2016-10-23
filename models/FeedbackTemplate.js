@@ -15,8 +15,9 @@ var FeedbackTemplateQuestionSchema = new Schema({
 
 var FeedbackStatisticSchema = new Schema({
 
+  _id:false,
   fid: { type: ObjectId, require: true },
-  analysis: { type: String, require: true }
+  datas: { type: String, require: true }
 
 });
 

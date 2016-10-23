@@ -23,7 +23,8 @@ exports.get = function* (id) {
 };
 
 exports.post = function* (id) {
-  var feedbackTemplate = yield $FeedbackTemplate.findOneById(id, { lean: true })
+  var feedbackTemplate = yield $FeedbackTemplate.findOneById(id, { lean: false })
+
   if (feedbackTemplate) {
     var newFeedbackData = {
       responses: []
@@ -43,6 +44,8 @@ exports.post = function* (id) {
       }
     } else {
       var client = yield $Client.getByEmail(advisor_id, email, "name email phone gender married note categories age childrens job income")
+      let fields = feedbackTemplate.fields
+
       if (user && client) {
         newFeedbackData['user'] = user._id
         newFeedbackData['client'] = client._id
@@ -60,10 +63,16 @@ exports.post = function* (id) {
         })
         newFeedbackData['user'] = user._id
         newFeedbackData['client'] = newClient._id
+      } else if (!user && !client) {
+        // var newClient = yield $Client.newClient({
+        //   advisor: advisor_id,
+        //   name: user.firstName + " " + user.lastName
+        // })
       }
+
       var fieldsDictionary = {}
-      let fields = feedbackTemplate.fields
       var responses = this.request.body
+
       _.forIn(responses, function(value, key) {
         if (key !== 'email') {
           var object = _.find(fields, function(o) { return o._id == key; })
@@ -75,7 +84,9 @@ exports.post = function* (id) {
           }
         }
       })
+
       console.log(fieldsDictionary)
+
       _.forIn(fieldsDictionary, function(value, key) {
         if (value) {
           newFeedbackData.responses.push({
@@ -84,7 +95,9 @@ exports.post = function* (id) {
           })
         }
       })
+
       console.log(newFeedbackData)
+
       newFeedbackData['complete'] = true
       var newFeedback = yield $Feedback.addOne(newFeedbackData)
       if (newFeedback) {
@@ -98,6 +111,61 @@ exports.post = function* (id) {
           success: false
         }
       }
+      var statistic = []
+      if (feedbackTemplate.statistic) {
+        statistic = feedbackTemplate.statistic
+        _.forIn(fieldsDictionary, function(value, key) {
+          if (value) {
+            if (_.find(statistic, function(o){ return o.fid == key })) {
+              var datas = _.get(_.find(statistic, function(o){ return o.fid == key; }), 'datas', null)
+              if (datas) {
+                let stat_index = _.findIndex(statistic, function(o) { return o.fid == key; });
+                datas = JSON.parse(datas)
+                if (value.type === 'mc') {
+                  if (_.has(datas, value['response'])) {
+                    datas[value['response']] = datas[value['response']] + 1
+                  }
+                } else if (value.type === 'rate') {
+                  if (_.has(datas, value['response'])) {
+                    datas[value['response']] = datas[value['response']] + 1
+                  }
+                }
+                statistic[stat_index]['datas'] = JSON.stringify(datas)
+              }
+            } else {
+              var datas = {}
+              if (value.type === 'mc') {
+                datas[value['response']] = 1
+              } else if (value.type === 'rate') {
+                datas[value['response']] = 1
+              }
+              statistic.push({
+                'fid': key,
+                'datas': JSON.stringify(datas)
+              })
+            }
+          }
+        })
+        feedbackTemplate.save()
+      } else {
+        _.forIn(fieldsDictionary, function(value, key) {
+          if (value) {
+            var datas = {}
+            if (value.type === 'mc') {
+              datas[value['response']] = 1
+            } else if (value.type === 'rate') {
+              datas[value['response']] = 1
+            }
+            statistic.push({
+              'fid': key,
+              'datas': JSON.stringify(datas)
+            })
+          }
+        })
+        feedbackTemplate.save()
+
+      }
+
     }
   }
 };
