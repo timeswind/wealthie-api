@@ -56,18 +56,21 @@ exports.post = function* (id) {
       } else if (!user && client) {
         newFeedbackData['client'] = client._id
         // invite user to join wealthie
-      } else if (user && !client) {
+      } else if (user && !client && email) {
         var newClient = yield $Client.newClient({
           advisor: advisor_id,
-          name: user.firstName + " " + user.lastName
+          name: user.firstName + " " + user.lastName,
+          email: email
         })
         newFeedbackData['user'] = user._id
         newFeedbackData['client'] = newClient._id
-      } else if (!user && !client) {
-        // var newClient = yield $Client.newClient({
-        //   advisor: advisor_id,
-        //   name: user.firstName + " " + user.lastName
-        // })
+      } else if (!user && !client && email && this.request.body.name) {
+        var newClient = yield $Client.newClient({
+          advisor: advisor_id,
+          name: this.request.body.name,
+          email: email
+        })
+        newFeedbackData['client'] = newClient._id
       }
 
       var fieldsDictionary = {}
@@ -163,9 +166,7 @@ exports.post = function* (id) {
           }
         })
         feedbackTemplate.save()
-
       }
-
     }
   }
 };
