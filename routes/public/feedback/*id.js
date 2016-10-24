@@ -102,18 +102,7 @@ exports.post = function* (id) {
       console.log(newFeedbackData)
 
       newFeedbackData['complete'] = true
-      var newFeedback = yield $Feedback.addOne(newFeedbackData)
-      if (newFeedback) {
-        this.status = 200
-        this.body = {
-          success: true
-        }
-      } else {
-        this.status = 500
-        this.body = {
-          success: false
-        }
-      }
+
       var statistic = []
       if (feedbackTemplate.statistic) {
         statistic = feedbackTemplate.statistic
@@ -127,10 +116,14 @@ exports.post = function* (id) {
                 if (value.type === 'mc') {
                   if (_.has(datas, value['response'])) {
                     datas[value['response']] = datas[value['response']] + 1
+                  } else {
+                    datas[value['response']] = 1
                   }
                 } else if (value.type === 'rate') {
                   if (_.has(datas, value['response'])) {
                     datas[value['response']] = datas[value['response']] + 1
+                  } else {
+                    datas[value['response']] = 1
                   }
                 }
                 statistic[stat_index]['datas'] = JSON.stringify(datas)
@@ -166,6 +159,18 @@ exports.post = function* (id) {
           }
         })
         feedbackTemplate.save()
+      }
+      var newFeedback = yield $Feedback.addOne(newFeedbackData)
+      if (newFeedback) {
+        this.status = 200
+        this.body = {
+          success: true
+        }
+      } else {
+        this.status = 500
+        this.body = {
+          success: false
+        }
       }
     }
   }
