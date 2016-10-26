@@ -1,6 +1,7 @@
 var Models = require('../../lib/core');
 var _ = require('lodash');
 var $Calendar = Models.$Calendar;
+var $Appointment = Models.$Appointment;
 
 exports.post = function* () {
   let advisor_id = this.state.user.id
@@ -61,32 +62,41 @@ exports.post = function* () {
 
 exports.get = function* () {
   let advisor_id = this.state.user.id
-  var monthCode = parseInt(new Date().getFullYear()+("0" + (new Date().getMonth() + 1)).slice(-2))
-
+  var monthCode
+  var month_index
   if (this.query.year) {
     monthCode = parseInt(this.query.year + ("0" + this.query.month).slice(-2))
+    month_index = parseInt(this.query.month) - 1
+  } else {
+    monthCode = parseInt(new Date().getFullYear()+("0" + (new Date().getMonth() + 1)).slice(-2))
+    month_index = new Date().getMonth()
   }
-  console.log(monthCode)
-  var currentMonthCalendar = yield $Calendar.getCalendar(advisor_id, monthCode)
+
+  var currentMonthCalendar = yield $Calendar.getCalendar(advisor_id, monthCode, { lean: true })
   if (currentMonthCalendar) {
+    var currentMonthAppointments = yield $Appointment.findByMonth(advisor_id, month_index, {populate: true})
     this.status = 200
     this.body = {
       success: true,
-      calendar: currentMonthCalendar.toJSON()
+      calendar: currentMonthCalendar,
+      appointments: currentMonthAppointments
     }
   } else {
-    var latestMonthCalendar = yield $Calendar.getLatestCalendar(advisor_id)
+    var latestMonthCalendar = yield $Calendar.getLatestCalendar(advisor_id, { lean: true })
+    var currentMonthAppointments = yield $Appointment.findByMonth(advisor_id, month_index, {populate: true})
     if (latestMonthCalendar) {
       this.status = 200
       this.body = {
         success: true,
-        calendar: latestMonthCalendar.toJSON()
+        calendar: latestMonthCalendar,
+        appointments: currentMonthAppointments
       }
     } else {
       this.status = 200
       this.body = {
         success: true,
-        calendar: null
+        calendar: null,
+        appointments: null
       }
     }
   }

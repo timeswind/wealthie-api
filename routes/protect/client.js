@@ -2,7 +2,7 @@ var Models = require('../../lib/core');
 var _ = require('lodash');
 var $Client = Models.$Client;
 var $Appointment = Models.$Appointment;
-
+var $Feedback = Models.$Feedback;
 exports.post = function* () {
   var newClientData = this.request.body
   var advisor_id = this.state.user.id
@@ -30,6 +30,7 @@ exports.get = function* () {
 
   var client = yield $Client.getClient(client_id, "name email phone gender married note categories age childrens job income")
   var appointments = yield $Appointment.findByClientId(client_id)
+  // var feedbacks = yield
   if (client) {
     this.status = 200
     this.body = {
