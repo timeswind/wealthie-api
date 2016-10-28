@@ -9,7 +9,11 @@ var AppointmentSchema = new Schema({
   date: { type: Date },
   start: { type: Number }, // 0-1440 represent minute pass in a day
   end: { type: Number },  // 0-1440 represent minute pass in a day
-  note: { type: String } // for advisor
+  note: { type: String }, // for advisor
+  status: {
+    type: String,
+    enum: ['pending', 'scheduled']
+  } // pending scheduled complete
 });
 
 AppointmentSchema.index({

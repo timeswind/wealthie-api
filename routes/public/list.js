@@ -66,7 +66,7 @@ exports.get = function* () {
         };
 
         var appointmentsInfo = yield $Appointment.findByMonth(advisor_id, month_index, {populate: true})
-
+        console.log(appointmentsInfo)
         if (appointmentsInfo && calendarInfo && calendarInfo.available && calendarInfo.available.length > 0 && appointmentsInfo.length > 0) {
           appointmentsInfo.forEach((appointment)=>{
             let date = new Date(appointment.date)

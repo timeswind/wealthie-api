@@ -4,7 +4,7 @@ var sentry = new raven.Client('https://b03d70e23cb849e1aa7c90f17fb9ace0:81af6250
 var logger = require('koa-logger');
 var bodyparser = require('koa-bodyparser');
 var errorhandler = require('koa-errorhandler');
-var gzip = require('koa-gzip');
+var compress = require('koa-compress')
 var scheme = require('koa-scheme');
 var router = require('koa-frouter');
 var config = require('config-lite');
@@ -13,9 +13,9 @@ var jwt = require('koa-jwt');
 var fs = require('fs');
 var publicKey = fs.readFileSync('platform.rsa.pub');
 
-app.on('error', function(err) {
-  sentry.captureException(err);
-});
+// app.on('error', function(err) {
+//   sentry.captureException(err);
+// });
 
 app.use(function *(next){
   if (this.headers.authorization) {
@@ -35,7 +35,7 @@ app.use(errorhandler());
 app.use(bodyparser());
 app.use(logger());
 app.use(scheme(config.schemeConf));
-app.use(gzip());
+app.use(compress())
 app.use(router(app, config.routerConf));
 app.use(function *(){
   this.body = 'Hello World';

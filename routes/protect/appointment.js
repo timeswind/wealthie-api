@@ -6,6 +6,7 @@ exports.post = function* () {
   var newAppointmentData = this.request.body
   var advisor_id = this.state.user.id
   newAppointmentData['advisor'] = advisor_id
+  newAppointmentData['status'] = 'scheduled'
 
   var newAppointment = yield $Appointment.addOne(newAppointmentData)
 
