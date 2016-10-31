@@ -25,16 +25,15 @@
     "koa-rewrite": "^1.1.1",
     "koa-scheme": "2.2.1",
     "lodash": "^4.16.4",
+    "moment": "^2.15.2",
     "mongoose": "4.6.5",
     "qiniu": "^6.1.13",
     "raven": "^0.12.1",
     "sendgrid": "^4.7.1",
-    "supertest": "^1.2.0",
     "validator": "6.1.0"
   },
   "devDependencies": {
     "co-mocha": "^1.1.2",
-    "co-supertest": "0.0.10",
     "mocha": "^3.1.2"
   },
   "engines": {

@@ -10,12 +10,12 @@ module.exports = {
   },
   "POST /public/login": {
     "request": {
-      "body": checkSigninBody
+      "body": checkLoginBody
     }
   },
   "GET /public/list": {
     "request": {
-      "query": checkValidObjectId
+      "query": checkGetListQuery
     }
   },
   "POST /protect/list": {
@@ -45,7 +45,12 @@ module.exports = {
   },
   "GET /public/calendar": {
     "request": {
-      "query": checkGetCalendarQueryForPublicApi
+      "query": checkGetCalendarQueryForPublic
+    }
+  },
+  "GET /public/calendar/available-of-day": {
+    "request": {
+      "query": checkGetAvailableOfDayOfCalendarForPublic
     }
   },
   "POST /protect/calendar": {
@@ -62,7 +67,7 @@ module.exports = {
     "request": {
       "body": checkNewTemplateBody
     }
-  },
+  }
 };
 
 function checkNewTemplateBody () {
@@ -95,12 +100,28 @@ function checkNewTemplateBody () {
   }
 }
 
-function checkGetCalendarQueryForPublicApi() {
+function checkGetCalendarQueryForPublic() {
   let requiredParams = ['year', 'month', 'advisor_id'];
   var paramsComplete = _.every(requiredParams, _.partial(_.has, this.request.query));
   var query = this.request.query
 
   if (paramsComplete && _.isNumber(parseInt(query.year)) && parseInt(query.year).toString().length === 4 && _.isNumber(parseInt(query.month)) && _.inRange(parseInt(query.month).toString().length, 1, 3) &&ObjectId.isValid(this.request.query.advisor_id)) {
+    return true
+  } else {
+    this.status = 400
+    this.body = {
+      error: 'invalid params'
+    }
+    return false
+  }
+}
+
+function checkGetAvailableOfDayOfCalendarForPublic() {
+  let requiredParams = ['date', 'advisor_id'];
+  var paramsComplete = _.every(requiredParams, _.partial(_.has, this.request.query));
+  var query = this.request.query
+
+  if (paramsComplete && _.isDate(new Date(query.date)) && ObjectId.isValid(query.advisor_id)) {
     return true
   } else {
     this.status = 400
@@ -222,7 +243,7 @@ function checkCreateClientBody () {
   }
 }
 
-function checkValidObjectId() {
+function checkGetListQuery() {
   if (_.has(this.request.query, 'id')) {
     var list_id = this.request.query.id
     if (ObjectId.isValid(list_id)) {
@@ -363,7 +384,7 @@ function checkSignupBody() {
   return true;
 }
 
-function checkSigninBody() {
+function checkLoginBody() {
   var body = this.request.body;
   var respond;
   if (!body || !body.email) {

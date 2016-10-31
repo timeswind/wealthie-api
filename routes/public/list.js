@@ -6,10 +6,8 @@ var $Appointment = Models.$Appointment;
 
 exports.get = function* () {
   let idType = this.request.query.type
-
   if (idType === 'advisor') {
     var advisor_id = this.request.query.id
-
     var listInfo = yield $List.getByAdvisorId(advisor_id, "independent affiliation categories brief phone email experience address loc advisor")
     if (listInfo) {
       let advisor_id = listInfo.advisor
@@ -41,7 +39,6 @@ exports.get = function* () {
     }
   } else {
     var list_id = this.request.query.id
-
     var listInfo = yield $List.getById(list_id, "independent affiliation categories brief phone email experience address loc advisor")
     if (listInfo) {
       let advisor_id = listInfo.advisor
@@ -64,9 +61,7 @@ exports.get = function* () {
           listInfo: listInfo,
           advisorInfo: advisorInfo
         };
-
         var appointmentsInfo = yield $Appointment.findByMonth(advisor_id, month_index, {populate: true})
-        console.log(appointmentsInfo)
         if (appointmentsInfo && calendarInfo && calendarInfo.available && calendarInfo.available.length > 0 && appointmentsInfo.length > 0) {
           appointmentsInfo.forEach((appointment)=>{
             let date = new Date(appointment.date)
@@ -81,10 +76,8 @@ exports.get = function* () {
             console.log(weekDay)
             calendarInfo.available.map((calendar)=>{
               if (calendar.day === weekDay) {
-                console.log(weekDay)
                 let calendarFrom = calendar.from
                 let calendarTo = calendar.to
-
                 if (appointmentFrom < calendarFrom && appointmentTo > calendarTo) {
                   calendar = null
                 } else if (appointmentFrom <= calendarFrom && appointmentTo <= calendarTo && appointmentTo > calendarFrom) {
@@ -100,7 +93,6 @@ exports.get = function* () {
                     to: appointmentFrom
                   }
                 }
-
               }
               return calendar
             })
