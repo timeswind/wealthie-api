@@ -55,13 +55,13 @@ exports.get = function* () {
       var calendarInfo = yield $Calendar.getCalendar(advisor_id, monthCode, { lean: true })
 
       if (advisorInfo) {
+        var appointmentsInfo = yield $Appointment.findByMonth(advisor_id, month_index, {populate: true})
         this.status = 200;
         this.body = {
           success: true,
           listInfo: listInfo,
           advisorInfo: advisorInfo
         };
-        var appointmentsInfo = yield $Appointment.findByMonth(advisor_id, month_index, {populate: true})
         if (appointmentsInfo && calendarInfo && calendarInfo.available && calendarInfo.available.length > 0 && appointmentsInfo.length > 0) {
           appointmentsInfo.forEach((appointment)=>{
             let date = new Date(appointment.date)
