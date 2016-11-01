@@ -67,8 +67,18 @@ module.exports = {
     "request": {
       "body": checkNewTemplateBody
     }
-  }
+  },
+  "GET /protect/appointments/:advisorid": {
+    "request": {
+      "query": protectAppointmentAdvisorid
+    }
+  },
 };
+
+function protectAppointmentAdvisorid () {
+  console.log(this.params)
+  return true
+}
 
 function checkNewTemplateBody () {
   let requiredParams = ['title', 'fields'];
@@ -212,11 +222,17 @@ function checkAddOfficeTimeBody() {
 }
 
 function checkAddAppointmentbody () {
-  let requiredParams = ['client', 'date', 'start', 'end'];
+  let user_role = this.state.user.role
+  var requiredParams
+  if (user_role === 1) {
+    requiredParams = ['advisor','date', 'start', 'end'];
+  } else {
+    requiredParams = ['client', 'date', 'start', 'end'];
+  }
   var paramsComplete = _.every(requiredParams, _.partial(_.has, this.request.body));
 
   if (paramsComplete) {
-    this.request.body = _.pick(this.request.body, ['client', 'date', 'start', 'end', 'note'])
+    this.request.body = _.pick(this.request.body, ['client', 'advisor', 'date', 'start', 'end', 'note'])
     return true
   } else {
     this.status = 400
@@ -309,14 +325,14 @@ function checkCreateListBody() {
       }
       return false
     }
-    else if (validator.isNull(phone)) {
+    else if (_.isNull(phone)) {
       this.status = 400
       this.body = {
         error: 'Missing phone number'
       }
       return false
     }
-    else if (validator.isNull(brief)) {
+    else if (_.isNull(brief)) {
       this.status = 400
       this.body = {
         error: 'Missing brief'
