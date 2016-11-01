@@ -53,8 +53,12 @@ exports.get = function* () {
       }
       var advisorInfo = yield $User.getById(advisor_id, "firstName lastName")
       var calendarInfo = yield $Calendar.getCalendar(advisor_id, monthCode, { lean: true })
-      console.log(advisor_id)
-      console.log(monthCode)
+      if (!calendarInfo) {
+        let latestMonthCalendar = yield $Calendar.getLatestCalendar(advisor_id, { lean: true })
+        if (latestMonthCalendar) {
+          calendarInfo = latestMonthCalendar
+        }
+      }
       console.log(calendarInfo)
       if (advisorInfo) {
         var appointmentsInfo = yield $Appointment.findByMonth(advisor_id, month_index, {populate: true})
