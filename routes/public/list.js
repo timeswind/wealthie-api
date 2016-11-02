@@ -16,8 +16,7 @@ exports.get = function* () {
         this.status = 200;
         this.body = {
           success: true,
-          listInfo: listInfo,
-          advisorInfo: advisorInfo
+          listInfo: listInfo
         };
         return true
       } else {
@@ -61,6 +60,7 @@ exports.get = function* () {
       }
       console.log(calendarInfo)
       if (advisorInfo) {
+        listInfo.name = advisorInfo.firstName + " " + advisorInfo.lastName
         var appointmentsInfo = yield $Appointment.findByMonth(advisor_id, month_index, {populate: true})
         this.status = 200;
         this.body = {
