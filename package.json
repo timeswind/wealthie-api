@@ -30,6 +30,7 @@
     "qiniu": "^6.1.13",
     "raven": "^0.12.1",
     "sendgrid": "^4.7.1",
+    "sitemap": "^1.8.2",
     "validator": "6.1.0"
   },
   "devDependencies": {

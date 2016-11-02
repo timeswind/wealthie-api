@@ -13,9 +13,9 @@ var jwt = require('koa-jwt');
 var fs = require('fs');
 var publicKey = fs.readFileSync('platform.rsa.pub');
 
-app.on('error', function(err) {
-  sentry.captureException(err);
-});
+// app.on('error', function(err) {
+//   sentry.captureException(err);
+// });
 
 app.use(function *(next){
   if (this.headers.authorization) {
