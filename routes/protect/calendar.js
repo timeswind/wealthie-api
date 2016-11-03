@@ -5,19 +5,26 @@ var $Appointment = Models.$Appointment;
 
 exports.post = function* () {
   let advisor_id = this.state.user.id
-  var monthCode = parseInt(new Date().getFullYear()+("0" + (new Date().getMonth() + 1)).slice(-2))
+  var monthCode
   var newCalendarEvent = this.request.body
+  var newEventObj = {
+    from: newCalendarEvent.from,
+    to: newCalendarEvent.to
+  }
+  if (newCalendarEvent.day) {
+    newEventObj['day'] = newCalendarEvent.day
+  }
+  if (newCalendarEvent.date) {
+    newEventObj['date'] = newCalendarEvent.date
+  }
   if (newCalendarEvent.month && newCalendarEvent.year) {
     monthCode = parseInt(newCalendarEvent.year+("0" + (newCalendarEvent.month)).slice(-2))
+  } else {
+    monthCode = parseInt(new Date().getFullYear()+("0" + (new Date().getMonth() + 1)).slice(-2))
   }
   var currentMonthCalendar = yield $Calendar.getCalendar(advisor_id, monthCode)
-  console.log(currentMonthCalendar)
   if (currentMonthCalendar) {
-    currentMonthCalendar.available.push({
-      day: newCalendarEvent.day,
-      from: newCalendarEvent.from,
-      to: newCalendarEvent.to
-    })
+    currentMonthCalendar.available.push(newEventObj)
     yield currentMonthCalendar.save()
     this.status = 200
     this.body = {
@@ -27,29 +34,24 @@ exports.post = function* () {
   } else {
     var latestMonthCalendar = yield $Calendar.getLatestCalendar(advisor_id)
     var newCalendar = yield $Calendar.newCalendar(advisor_id, monthCode)
-
     if (latestMonthCalendar) {
       if (latestMonthCalendar.available.length > 0) {
         latestMonthCalendar.available.forEach((event)=>{
-          newCalendar.available.push({
-            day: event.day,
+          var available = {
             from: event.from,
             to: event.to
-          })
+          }
+          if (event.day) {
+            available['day'] = event.day
+          }
+          if (event.date) {
+            available['date'] = event.date
+          }
+          newCalendar.available.push(available)
         })
       }
-      newCalendar.available.push({
-        day: newCalendarEvent.day,
-        from: newCalendarEvent.from,
-        to: newCalendarEvent.to
-      })
-    } else {
-      newCalendar.available.push({
-        day: newCalendarEvent.day,
-        from: newCalendarEvent.from,
-        to: newCalendarEvent.to
-      })
     }
+    newCalendar.available.push(newEventObj)
 
     yield newCalendar.save()
     this.status = 200
