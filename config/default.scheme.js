@@ -318,7 +318,7 @@ function checkEditListBody() {
 
 function checkCreateUnclimedListBody() {
   var body = this.request.body;
-  let requiredParams = ['categories', 'phone', 'email', 'name']
+  let requiredParams = ['categories', 'phone', 'name']
   var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
 
   if (paramsComplete) {
@@ -339,7 +339,7 @@ function checkCreateUnclimedListBody() {
       }
       return false
     }
-    else if (!validator.isEmail(email)) {
+    else if (email && !validator.isEmail(email)) {
       this.status = 400
       this.body = {
         error: 'Bad email format'
