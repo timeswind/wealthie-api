@@ -3,7 +3,7 @@ var $List = Models.$List;
 var $User = Models.$User;
 
 exports.get = function* () {
-  var listInfo = yield $List.getLatest(10, "advisor affiliation categories brief")
+  var listInfo = yield $List.getLatest(10, "name advisor affiliation categories brief")
 
   if (listInfo) {
     this.status = 200
