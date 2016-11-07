@@ -8,7 +8,7 @@ exports.get = function* () {
   let idType = this.request.query.type
   if (idType === 'advisor') {
     var advisor_id = this.request.query.id
-    var listInfo = yield $List.getByAdvisorId(advisor_id, "independent affiliation categories brief phone email experience address loc advisor")
+    var listInfo = yield $List.getByAdvisorId(advisor_id, "name independent affiliation categories brief phone email experience address loc advisor public")
     if (listInfo) {
       let advisor_id = listInfo.advisor
       var advisorInfo = yield $User.getById(advisor_id, "firstName lastName")
@@ -20,12 +20,20 @@ exports.get = function* () {
         };
         return true
       } else {
-        this.status = 404;
-        this.body = {
-          success: false,
-          listInfo: null,
-          advisorInfo: null
-        };
+        if (listInfo.public === true) {
+          this.status = 200;
+          this.body = {
+            success: true,
+            listInfo: listInfo
+          };
+        } else {
+          this.status = 404;
+          this.body = {
+            success: false,
+            listInfo: null,
+            advisorInfo: null
+          };
+        }
       }
 
     } else {
@@ -38,7 +46,8 @@ exports.get = function* () {
     }
   } else {
     var list_id = this.request.query.id
-    var listInfo = yield $List.getById(list_id, "independent affiliation categories brief phone email experience address loc advisor")
+    var listInfo = yield $List.getById(list_id, "name public independent affiliation categories brief phone email experience address loc advisor")
+    console.log(listInfo)
     if (listInfo) {
       let advisor_id = listInfo.advisor
       var monthCode
@@ -58,7 +67,6 @@ exports.get = function* () {
           calendarInfo = latestMonthCalendar
         }
       }
-      console.log(calendarInfo)
       if (advisorInfo) {
         listInfo.name = advisorInfo.firstName + " " + advisorInfo.lastName
         var appointmentsInfo = yield $Appointment.findByMonth(advisor_id, month_index, {populate: true})
@@ -108,12 +116,21 @@ exports.get = function* () {
           this.body['calendar'] = calendarInfo
         }
       } else {
-        this.status = 404;
-        this.body = {
-          success: false,
-          listInfo: null,
-          advisorInfo: null
-        };
+        console.log(listInfo.public)
+        if (listInfo.public === true) {
+          this.status = 200;
+          this.body = {
+            success: true,
+            listInfo: listInfo
+          };
+        } else {
+          this.status = 404;
+          this.body = {
+            success: false,
+            listInfo: null,
+            advisorInfo: null
+          };
+        }
       }
 
     } else {

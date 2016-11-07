@@ -23,6 +23,16 @@ module.exports = {
       "body": checkCreateListBody
     }
   },
+  "POST /internal/lists/unclaimed": {
+    "request": {
+      "body": checkCreateUnclimedListBody
+    }
+  },
+  "PUT /internal/lists/unclaimed": {
+    "request": {
+      "body": checkCreateUnclimedListBody
+    }
+  },
   "POST /protect/client": {
     "request": {
       "body": checkCreateClientBody
@@ -306,6 +316,46 @@ function checkEditListBody() {
   }
 }
 
+function checkCreateUnclimedListBody() {
+  var body = this.request.body;
+  let requiredParams = ['categories', 'phone', 'email', 'name']
+  var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
+
+  if (paramsComplete) {
+    let categories = body.categories;
+    let phone = body.phone;
+    let email = body.email;
+    if (!_.inRange(body.categories.length, 1, 4)) {
+      this.status = 400
+      this.body = {
+        error: 'You should choose at least 1 category but no more then 3'
+      }
+      return false
+    }
+    else if (_.isNull(phone)) {
+      this.status = 400
+      this.body = {
+        error: 'Missing phone number'
+      }
+      return false
+    }
+    else if (!validator.isEmail(email)) {
+      this.status = 400
+      this.body = {
+        error: 'Bad email format'
+      }
+      return false
+    }
+    else {
+      return true
+    }
+  } else {
+    this.status = 400
+    return false
+  }
+
+}
+
 function checkCreateListBody() {
   var body = this.request.body;
   let requiredParams = ['categories', 'phone', 'brief']
@@ -313,11 +363,9 @@ function checkCreateListBody() {
   // console.log(body)
 
   if (paramsComplete) {
-    let user = this.state.user;
     let categories = body.categories;
     let phone = body.phone;
     let brief = body.brief;
-    // console.log(user)
     if (!_.inRange(body.categories.length, 1, 4)) {
       this.status = 400
       this.body = {

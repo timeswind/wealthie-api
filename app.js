@@ -13,9 +13,9 @@ var jwt = require('koa-jwt');
 var fs = require('fs');
 var publicKey = fs.readFileSync('platform.rsa.pub');
 
-app.on('error', function(err) {
-  sentry.captureException(err);
-});
+// app.on('error', function(err) {
+//   sentry.captureException(err);
+// });
 
 app.use(function *(next){
   if (this.headers.authorization) {
@@ -31,6 +31,16 @@ app.use(function *(next){
   }
 });
 app.use(jwt({ secret: publicKey, algorithm: 'RS256' }).unless({ path: [/^\/public/] }));
+app.use(function *(next){
+  let urlArray = this.request.url.split('/')
+  if (urlArray[1] === 'internal') {
+    if (this.state.user.role <= 100) {
+      this.status = 400;
+      this.body = 'Unauthorized';
+    }
+  }
+  yield next
+});
 app.use(errorhandler());
 app.use(bodyparser());
 app.use(logger());
