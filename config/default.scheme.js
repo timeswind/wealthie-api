@@ -373,10 +373,10 @@ function checkCreateListBody() {
       }
       return false
     }
-    else if (_.isNull(phone)) {
+    else if (_.isNull(phone) || !_.isNumber(phone)) {
       this.status = 400
       this.body = {
-        error: 'Missing phone number'
+        error: 'Missing phone number or bad format'
       }
       return false
     }

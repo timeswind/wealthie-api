@@ -15,7 +15,7 @@ var ListSchema = new Schema({
   independent: { type: Boolean, required: true },
   categories: { type:[Number], required: true },
   phone: { type: Number, required: true },
-  email: { type: String, required: true },
+  email: { type: String },
   brief: { type: String },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
