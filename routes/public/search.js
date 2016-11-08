@@ -11,7 +11,7 @@ exports.get = function* () {
   var coordinate = [parseFloat(long), parseFloat(lat)]
   // console.log(loc)
   // var maxDistance = 10/111.2
-  var listInfo = yield $List.combineSearch(categories, coordinate, "independent affiliation categories brief phone email address loc advisor")
+  var listInfo = yield $List.combineSearch(categories, coordinate, "name independent affiliation categories brief phone email address loc advisor")
 
   if (listInfo) {
     this.status = 200
