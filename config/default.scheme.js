@@ -339,6 +339,13 @@ function checkCreateUnclimedListBody() {
       }
       return false
     }
+    else if (!_.isNumber(phone)) {
+      this.status = 400
+      this.body = {
+        error: 'Phone number should be pure number'
+      }
+      return false
+    }
     else if (email && !validator.isEmail(email)) {
       this.status = 400
       this.body = {

@@ -13,14 +13,14 @@ var jwt = require('koa-jwt');
 var fs = require('fs');
 var publicKey = fs.readFileSync('platform.rsa.pub');
 
-app.on('error', function(err) {
-  sentry.captureException(err);
-});
-
 app.use(function *(next){
-  if (this.headers.authorization) {
+  let urlArray = this.request.url.split('/')
+  if (urlArray[1] !== 'public') {
     let token = this.headers.authorization
-    if (token.substring(0, 7) !== 'Bearer ') {
+    if (!token) {
+      this.status = 400;
+      this.body = 'permission denied';
+    } else if (token.substring(0, 7) !== 'Bearer ') {
       this.status = 400;
       this.body = 'invalid token format';
     } else {
@@ -30,6 +30,11 @@ app.use(function *(next){
     yield next
   }
 });
+
+app.on('error', function(err) {
+  sentry.captureException(err);
+});
+
 app.use(jwt({ secret: publicKey, algorithm: 'RS256' }).unless({ path: [/^\/public/] }));
 app.use(function *(next){
   let urlArray = this.request.url.split('/')

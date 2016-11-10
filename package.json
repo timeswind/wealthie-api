@@ -9,6 +9,7 @@
   "author": "Mingtian Yang",
   "license": "ISC",
   "dependencies": {
+    "ali-oss": "^4.6.2",
     "bcrypt-nodejs": "0.0.3",
     "co-cache": "2.2.0",
     "config-lite": "1.5.0",

@@ -41,7 +41,7 @@ exports.post = function* () {
   }
 };
 
-exports.PUT = function* () {
+exports.put = function* () {
   var update = this.request.body;
   if (update.affiliation) {
     update['independent'] = false;
@@ -60,6 +60,32 @@ exports.PUT = function* () {
     this.body = {
       success: false,
       error: "Something went wrong"
+    };
+  }
+};
+
+exports.delete = function* () {
+  var list_id = this.request.query.id;
+  var list = yield $List.findOneUnclaimed(list_id)
+  if (list) {
+    var removed = yield list.remove()
+    if (removed) {
+      this.status = 200;
+      this.body = {
+        success: true
+      };
+    } else {
+      this.status = 500;
+      this.body = {
+        success: false,
+        error: "Something went wrong"
+      };
+    }
+  } else {
+    this.status = 500;
+    this.body = {
+      success: false,
+      error: "List not found"
     };
   }
 };
