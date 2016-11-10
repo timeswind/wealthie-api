@@ -339,10 +339,10 @@ function checkCreateUnclimedListBody() {
       }
       return false
     }
-    else if (!_.isNumber(phone)) {
+    else if (isNaN(phone)) {
       this.status = 400
       this.body = {
-        error: 'Phone number should be pure number'
+        error: 'Phone number should be number'
       }
       return false
     }
