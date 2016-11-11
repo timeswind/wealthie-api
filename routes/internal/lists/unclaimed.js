@@ -2,7 +2,7 @@ var Models = require('../../../lib/core');
 var $List = Models.$List;
 
 exports.get = function* () {
-  var listInfo = yield $List.getAllUnclaimed('name email phone affiliation brief room address experience updated_at categories')
+  var listInfo = yield $List.getAllUnclaimed('listBy name email phone affiliation brief room address experience updated_at categories')
 
   if (listInfo) {
     this.status = 200
