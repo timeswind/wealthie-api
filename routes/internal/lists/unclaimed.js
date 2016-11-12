@@ -48,6 +48,8 @@ exports.put = function* () {
   } else {
     update['independent'] = true;
   }
+  update.updated_at = new Date()
+
   var findListAndUpdate = yield $List.updateUnclaimed(update._id, update);
   if (findListAndUpdate) {
     this.status = 200;

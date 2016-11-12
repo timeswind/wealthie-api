@@ -1,5 +1,7 @@
 module.exports = {
   QINIU_ACCESS_KEY: "Vm0kPW6U3Fu1CxQw6yiNBLkBh6NuuzzHHfAjDAxS",
   QINIU_SECRET_KEY: "vcw4jPQidl87EL_njikizaULH5uOf9-afMBkabGh",
-  QINIU_PIC_POLICY: "wealthie"
+  QINIU_PIC_POLICY: "wealthie",
+  ALIYUN_OSS_ACCESS_SECRET: 'qZjEH17TrQuLMMzXQ1EXi9o6PllR2H',
+  ALIYUN_OSS_ACCESS_KEY: 'LTAIcmwe3AB9j4ho'
 };
