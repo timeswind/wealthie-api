@@ -6,7 +6,7 @@ exports.get = function* () {
   if (list_id) {
     var now = new Date()
     var expires = new Date(now.getTime() + 15 * 60000)
-    var key = 'list-avatar-' + list_id
+    var key = crypto.createHash('md5').update('list-avatar-' + list_id).digest("hex");
     var policyText = {
       "expiration": expires, //15min to expire
       "conditions": [
@@ -21,6 +21,7 @@ exports.get = function* () {
       this.status = 200
       this.body = {
         success: true,
+        key,
         policy,
         expires,
         signature,

@@ -9,9 +9,8 @@ exports.get = function* () {
   var lat = this.request.query.lat
   var long = this.request.query.long
   var coordinate = [parseFloat(long), parseFloat(lat)]
-  // console.log(loc)
   // var maxDistance = 10/111.2
-  var listInfo = yield $List.combineSearch(categories, coordinate, "name independent affiliation categories brief phone email address loc advisor")
+  var listInfo = yield $List.combineSearch(categories, coordinate, "name independent affiliation categories brief phone email address loc advisor profileImage")
 
   if (listInfo) {
     this.status = 200

@@ -5,6 +5,10 @@ var ObjectId = Schema.Types.ObjectId;
 var ListSchema = new Schema({
   listBy: { type: ObjectId, ref: 'User' },
   public: { type: Boolean, default: false },
+  profileImage: {
+    key: String,
+    service: String
+  },
   name: { type: String },
   advisor: { type: ObjectId, ref: 'User' },
   affiliation: { type: String },

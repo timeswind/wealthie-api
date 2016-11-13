@@ -8,7 +8,7 @@ exports.get = function* () {
   let idType = this.request.query.type
   if (idType === 'advisor') {
     var advisor_id = this.request.query.id
-    var listInfo = yield $List.getByAdvisorId(advisor_id, "name independent affiliation categories brief phone email experience address loc advisor public")
+    var listInfo = yield $List.getByAdvisorId(advisor_id, "name profileImage independent affiliation categories brief phone email experience address loc advisor public")
     if (listInfo) {
       let advisor_id = listInfo.advisor
       var advisorInfo = yield $User.getById(advisor_id, "firstName lastName")
@@ -46,8 +46,7 @@ exports.get = function* () {
     }
   } else {
     var list_id = this.request.query.id
-    var listInfo = yield $List.getById(list_id, "name public independent affiliation categories brief phone email experience address loc advisor")
-    console.log(listInfo)
+    var listInfo = yield $List.getById(list_id, "name public independent affiliation categories brief phone email experience address loc advisor profileImage")
     if (listInfo) {
       let advisor_id = listInfo.advisor
       var monthCode
@@ -87,7 +86,6 @@ exports.get = function* () {
             if (weekDay === 0) {
               weekDay = 7
             }
-            console.log(weekDay)
             calendarInfo.available.map((calendar)=>{
               if (calendar.day === weekDay) {
                 let calendarFrom = calendar.from
@@ -116,7 +114,6 @@ exports.get = function* () {
           this.body['calendar'] = calendarInfo
         }
       } else {
-        console.log(listInfo.public)
         if (listInfo.public === true) {
           this.status = 200;
           this.body = {

@@ -2,7 +2,7 @@ var Models = require('../../../lib/core');
 var $List = Models.$List;
 
 exports.get = function* () {
-  var listInfo = yield $List.getAllUnclaimed('listBy name email phone affiliation brief room address experience updated_at categories')
+  var listInfo = yield $List.getAllUnclaimed('listBy name email phone affiliation brief room address experience updated_at categories profileImage')
 
   if (listInfo) {
     this.status = 200
@@ -24,7 +24,6 @@ exports.post = function* () {
   } else {
     data['independent'] = true;
   }
-  console.log(data)
   var newListInfo = yield $List.createList(data);
   if (newListInfo) {
     this.status = 200;
