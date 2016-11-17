@@ -6,9 +6,10 @@ var $Appointment = Models.$Appointment;
 
 exports.get = function* () {
   let idType = this.request.query.type
+  var listInfo = null
   if (idType === 'advisor') {
     var advisor_id = this.request.query.id
-    var listInfo = yield $List.getByAdvisorId(advisor_id, "name profileImage independent affiliation categories brief phone email experience address loc advisor public")
+    listInfo = yield $List.getByAdvisorId(advisor_id, "name profileImage independent affiliation categories brief phone email experience address loc advisor public")
     if (listInfo) {
       let advisor_id = listInfo.advisor
       var advisorInfo = yield $User.getById(advisor_id, "firstName lastName")
@@ -46,7 +47,7 @@ exports.get = function* () {
     }
   } else {
     var list_id = this.request.query.id
-    var listInfo = yield $List.getById(list_id, "name public independent affiliation categories brief phone email experience address loc advisor profileImage")
+    listInfo = yield $List.getById(list_id, "name independent affiliation categories brief phones experience addresses advisor profileImage specialties certHeaders certifications minimums compensations")
     if (listInfo) {
       let advisor_id = listInfo.advisor
       var monthCode
@@ -114,20 +115,11 @@ exports.get = function* () {
           this.body['calendar'] = calendarInfo
         }
       } else {
-        if (listInfo.public === true) {
-          this.status = 200;
-          this.body = {
-            success: true,
-            listInfo: listInfo
-          };
-        } else {
-          this.status = 404;
-          this.body = {
-            success: false,
-            listInfo: null,
-            advisorInfo: null
-          };
-        }
+        this.status = 200;
+        this.body = {
+          success: true,
+          listInfo: listInfo
+        };
       }
 
     } else {

@@ -292,12 +292,12 @@ function checkGetListQuery() {
 
 function checkEditListBody() {
   var body = this.request.body;
-  let requiredParams = ['_id', 'categories', 'phone', 'brief', 'email', 'experience', 'loc', 'independent']
+  let requiredParams = ['_id', 'categories', 'phones', 'brief', 'experience', 'addresses', 'independent']
   var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
 
   if (paramsComplete) {
     console.log(this.request.body)
-    this.request.body = _.pick(body, ['_id', 'categories', 'phone', 'brief', 'email', 'experience', 'loc', 'address', 'room', 'independent'])
+    this.request.body = _.pick(body, ['_id', 'categories', 'phones', 'brief', 'experience', 'addresses', 'independent'])
     if (!_.inRange(body.categories.length, 1, 4)) {
       this.status = 400
       this.body = {
@@ -318,12 +318,12 @@ function checkEditListBody() {
 
 function checkCreateUnclimedListBody() {
   var body = this.request.body;
-  let requiredParams = ['categories', 'phone', 'name']
+  let requiredParams = ['categories', 'phones', 'name']
   var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
 
   if (paramsComplete) {
     let categories = body.categories;
-    let phone = body.phone;
+    let phones = body.phones;
     let email = body.email;
     if (!_.inRange(body.categories.length, 1, 4)) {
       this.status = 400
@@ -332,17 +332,10 @@ function checkCreateUnclimedListBody() {
       }
       return false
     }
-    else if (_.isNull(phone)) {
+    else if (_.isNull(phones)) {
       this.status = 400
       this.body = {
         error: 'Missing phone number'
-      }
-      return false
-    }
-    else if (isNaN(phone)) {
-      this.status = 400
-      this.body = {
-        error: 'Phone number should be number'
       }
       return false
     }
@@ -365,13 +358,13 @@ function checkCreateUnclimedListBody() {
 
 function checkCreateListBody() {
   var body = this.request.body;
-  let requiredParams = ['categories', 'phone', 'brief']
+  let requiredParams = ['categories', 'phones', 'brief']
   var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
   // console.log(body)
 
   if (paramsComplete) {
     let categories = body.categories;
-    let phone = body.phone;
+    let phones = body.phones;
     let brief = body.brief;
     if (!_.inRange(body.categories.length, 1, 4)) {
       this.status = 400
@@ -380,7 +373,7 @@ function checkCreateListBody() {
       }
       return false
     }
-    else if (_.isNull(phone) || !_.isNumber(phone)) {
+    else if (_.isNull(phones)) {
       this.status = 400
       this.body = {
         error: 'Missing phone number or bad format'

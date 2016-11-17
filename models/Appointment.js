@@ -16,11 +16,8 @@ var AppointmentSchema = new Schema({
   } // pending scheduled complete
 });
 
-AppointmentSchema.index({
-  advisor: 1,
-  client: 1,
-  user: 1,
-  date: 1
-});
-
+AppointmentSchema.index({ advisor: 1, client: 1, date: 1 })
+AppointmentSchema.index({ advisor: 1, user: 1, date: 1 })
+AppointmentSchema.index({ user: 1, advisor: 1,  date: 1 })
+AppointmentSchema.index({ user: 1, status: 1 })
 module.exports = mongoose.model('Appointment', AppointmentSchema);

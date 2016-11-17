@@ -13,9 +13,6 @@ var CalendarSchema = new Schema({
   }]
 });
 
-CalendarSchema.index({
-  advisor: 1,
-  month: 1
-});
+CalendarSchema.index({ advisor: 1, month: 1});
 
 module.exports = mongoose.model('Calendar', CalendarSchema);

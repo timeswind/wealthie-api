@@ -27,12 +27,8 @@ var ClientSchema = new Schema({
   zip: { type: Number }
 });
 
-ClientSchema.index({
-  advisor: 1,
-  name: 1,
-  email: 1,
-  sex: 1,
-  categories: 1
-});
+ClientSchema.index({ advisor: 1, name: 1 }); // for advisor search client name
+ClientSchema.index({ advisor: 1, email: 1}); // for advisor search client email
+ClientSchema.index({ advisor: 1, categories: 1}); // for advisor search client categories
 
 module.exports = mongoose.model('Client', ClientSchema);

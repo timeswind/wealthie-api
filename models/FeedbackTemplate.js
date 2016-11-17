@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
-var Mixed = Schema.Types.Mixed
 
 var FeedbackTemplateQuestionSchema = new Schema({
 
@@ -32,7 +31,8 @@ var FeedbackTemplateSchema = new Schema({
 });
 
 FeedbackTemplateSchema.index({
-  advisor: 1
+  advisor: 1,
+  updated_at: 1
 });
 
 module.exports = mongoose.model('FeedbackTemplate', FeedbackTemplateSchema);

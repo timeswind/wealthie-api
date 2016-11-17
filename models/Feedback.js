@@ -19,10 +19,8 @@ var FeedbackSchema = new Schema({
   created_at: { type: Date, default: Date.now }
 });
 
-FeedbackSchema.index({
-  client: 1,
-  user: 1,
-  advisor: 1
-});
+FeedbackSchema.index({advisor: 1, template: 1})
+FeedbackSchema.index({advisor: 1, client: 1})
+FeedbackSchema.index({user: 1, advisor: 1})
 
 module.exports = mongoose.model('Feedback', FeedbackSchema);
