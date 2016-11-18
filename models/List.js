@@ -12,8 +12,6 @@ var ListSchema = new Schema({
   advisor: { type: ObjectId, ref: 'User' },
   affiliation: { type: String },
   experience: [{ title: String, text: String, _id: false}],
-  loc: { type: [Number] },
-  address: { type: String },
   room: { type: String },
   phones: [{ type: String, _id: false }],
   addresses: [{
@@ -32,7 +30,6 @@ var ListSchema = new Schema({
   specialties: { type: String },
   independent: { type: Boolean, required: true },
   categories: { type:[Number], required: true },
-  phone: { type: String, required: true },
   email: { type: String },
   brief: { type: String },
   created_at: { type: Date, default: Date.now },
@@ -40,9 +37,12 @@ var ListSchema = new Schema({
 });
 
 ListSchema.index({ name: 1 })
-ListSchema.index({ "addresses.loc": '2dsphere', categories: 1, independent: 1, affiliation: 1 })
-ListSchema.index({ "addresses.postalCode": 1, categories: 1, independent: 1, affiliation: 1 })
-ListSchema.index({ "addresses.addressRegion": 1, categories: 1, independent: 1, affiliation: 1 })
+ListSchema.index({ "addresses.loc": '2dsphere', independent: 1, affiliation: 1 })
+ListSchema.index({ "addresses.postalCode": 1, independent: 1, affiliation: 1 })
+ListSchema.index({ "addresses.addressRegion": 1, independent: 1, affiliation: 1 })
+ListSchema.index({ categories: 1, independent: 1, affiliation: 1 })
+ListSchema.index({ categories: 1, independent: 1, affiliation: 1 })
+ListSchema.index({ categories: 1, independent: 1, affiliation: 1 })
 
 // db.lists.createIndex({name: 1}, {background: true})
 // db.lists.createIndex({"addresses.loc": '2dsphere', categories: 1, independent: 1, affiliation: 1}, {background: true})

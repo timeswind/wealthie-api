@@ -7,12 +7,11 @@ exports.post = function* () {
   var data = this.request.body
   let user = this.state.user
 
-  data.advisor = user.id
-
+  data['advisor'] = user.id
+  data['name'] = user.name || ""
   var userInfo = yield $User.getById(user.id)
 
   if (userInfo) {
-    data.email = userInfo.email
     if (userInfo.role === 2) {
       data.independent = false
       data.affiliation = userInfo.affiliation
@@ -68,7 +67,8 @@ exports.put = function* () {
   if (findListAndUpdate) {
     this.status = 200;
     this.body = {
-      success: true
+      success: true,
+      listInfo: findListAndUpdate
     };
   } else {
     this.status = 500;

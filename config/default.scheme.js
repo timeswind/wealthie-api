@@ -292,7 +292,7 @@ function checkGetListQuery() {
 
 function checkEditListBody() {
   var body = this.request.body;
-  let requiredParams = ['_id', 'categories', 'phones', 'brief', 'experience', 'addresses', 'independent']
+  let requiredParams = ['_id', 'categories', 'brief', 'experience', 'independent']
   var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
 
   if (paramsComplete) {
@@ -304,6 +304,33 @@ function checkEditListBody() {
         error: 'You should choose at least 1 category but no more then 3'
       }
       return false
+    } else if (_.has(this.request.body, 'addresses')) {
+      let addresses = this.request.body.addresses
+      if (_.isArray(addresses)) {
+        var addresses_valid = true
+        addresses.forEach((address)=>{
+          let requiredKeysForAddress = ['formattedAddress', 'loc']
+          let addressKeyComplete = _.every(requiredKeysForAddress, _.partial(_.has, address));
+          if (!addressKeyComplete) {
+            addresses_valid = false
+          }
+        })
+        if (!addresses_valid) {
+          this.status = 400
+          this.body = {
+            error: 'address in bad format'
+          }
+          return false
+        } else {
+          return true
+        }
+      } else {
+        this.status = 400
+        this.body = {
+          error: 'address in bad format'
+        }
+        return false
+      }
     } else {
       return true
     }
