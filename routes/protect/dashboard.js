@@ -7,7 +7,7 @@ exports.get = function* () {
   let user = this.state.user
 
   var userInfo = yield $User.getById(user.id, "firstName lastName role affiliation email verify")
-  var listInfo = yield $List.getByUserId(user.id, "phones brief categories independent affiliation experience addresses")
+  var listInfo = yield $List.getByUserId(user.id, "name phones brief categories independent affiliation experience addresses")
   var appointmentInfo = yield $Appointment.InThirtyDays(user.id, (new Date()), {populate: true})
   console.log(appointmentInfo)
   this.body = {}

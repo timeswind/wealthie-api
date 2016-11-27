@@ -292,12 +292,12 @@ function checkGetListQuery() {
 
 function checkEditListBody() {
   var body = this.request.body;
-  let requiredParams = ['_id', 'categories', 'brief', 'experience', 'independent']
+  let requiredParams = ['_id', 'name', 'categories', 'brief', 'experience', 'independent']
   var paramsComplete = _.every(requiredParams, _.partial(_.has, body));
 
   if (paramsComplete) {
     console.log(this.request.body)
-    this.request.body = _.pick(body, ['_id', 'categories', 'phones', 'brief', 'experience', 'addresses', 'independent'])
+    this.request.body = _.pick(body, ['_id', 'name', 'categories', 'phones', 'brief', 'experience', 'addresses', 'independent'])
     if (!_.inRange(body.categories.length, 1, 4)) {
       this.status = 400
       this.body = {

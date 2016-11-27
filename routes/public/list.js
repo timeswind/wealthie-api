@@ -48,6 +48,7 @@ exports.get = function* () {
   } else {
     var list_id = this.request.query.id
     listInfo = yield $List.getById(list_id, "name independent affiliation categories brief phones experience addresses advisor profileImage specialties certHeaders certifications minimums compensations")
+    console.log(listInfo)
     if (listInfo) {
       let advisor_id = listInfo.advisor
       var monthCode
@@ -59,7 +60,6 @@ exports.get = function* () {
         monthCode = parseInt(new Date().getFullYear()+("0" + (new Date().getMonth() + 1)).slice(-2))
         month_index = new Date().getMonth()
       }
-      var advisorInfo = yield $User.getById(advisor_id, "firstName lastName")
       var calendarInfo = yield $Calendar.getCalendar(advisor_id, monthCode, { lean: true })
       if (!calendarInfo) {
         let latestMonthCalendar = yield $Calendar.getLatestCalendar(advisor_id, { lean: true })
@@ -67,14 +67,12 @@ exports.get = function* () {
           calendarInfo = latestMonthCalendar
         }
       }
-      if (advisorInfo) {
-        listInfo.name = advisorInfo.firstName + " " + advisorInfo.lastName
+      if (calendarInfo) {
         var appointmentsInfo = yield $Appointment.findByMonth(advisor_id, month_index, {populate: true})
         this.status = 200;
         this.body = {
           success: true,
           listInfo: listInfo,
-          advisorInfo: advisorInfo
         };
         if (appointmentsInfo && calendarInfo && calendarInfo.available && calendarInfo.available.length > 0 && appointmentsInfo.length > 0) {
           appointmentsInfo.forEach((appointment)=>{
@@ -126,8 +124,7 @@ exports.get = function* () {
       this.status = 404;
       this.body = {
         success: false,
-        listInfo: null,
-        advisorInfo: null
+        listInfo: null
       };
     }
   }
