@@ -29,6 +29,7 @@ exports.post = function* () {
     name: userInfo.firstName + " " + userInfo.lastName,
     email: userInfo.email,
     role: userInfo.role,
+    permissions: userInfo.permissions || [],
     token: token
   };
 };

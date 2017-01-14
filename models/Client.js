@@ -24,7 +24,11 @@ var ClientSchema = new Schema({
   country: { type: String },
   city: { type: String },
   state: { type: String },
-  zip: { type: Number }
+  zip: { type: Number },
+  fields: [{
+    key: String,
+    data: String
+  }]
 });
 
 ClientSchema.index({ advisor: 1, name: 1 }); // for advisor search client name

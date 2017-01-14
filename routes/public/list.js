@@ -48,7 +48,6 @@ exports.get = function* () {
   } else {
     var list_id = this.request.query.id
     listInfo = yield $List.getById(list_id, "name independent affiliation categories brief phones experience addresses advisor profileImage specialties certHeaders certifications minimums compensations")
-    console.log(listInfo)
     if (listInfo) {
       let advisor_id = listInfo.advisor
       var monthCode

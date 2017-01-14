@@ -10,22 +10,19 @@ var UserSchema = new Schema({
   verify: { type: Boolean, default: false },
   password: { type: String, required: true },
   affiliation: { type: String },
+  company: { type: ObjectId, ref: 'Company' },
   role: { type: Number, required: true }, //  1 for normal user, 2 for agents, 3 for independent, 11 for premium user, 000 for admin, 001 for blog manager
-  balance: { type: Number },
-  pendingTransactions: [{ type: ObjectId, ref: "Transaction" }],
+  permissions: { type: [String] },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }
 });
 
 UserSchema.index({email: 1});
 
-// methods ======================
-// generating a hash
 UserSchema.methods.generateHash = function (password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
-// checking if password is valid
 UserSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
