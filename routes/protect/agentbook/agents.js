@@ -5,7 +5,7 @@ var $Agent = Models.$Agent;
 exports.get = function* () {
   var user_id = this.state.user.id
 
-  var agents = yield $Agent.getAgents(user_id, "manager referBy user joinAt meta isActive")
+  var agents = yield $Agent.getAgents(user_id, "manager name email phone joinAt fields isActive")
 
   if (agents) {
     this.status = 200
@@ -21,3 +21,24 @@ exports.get = function* () {
     }
   }
 };
+
+exports.post = function* () {
+    var user_id = this.state.user.id
+    var newAgentData = this.request.body
+    newAgentData['manager'] = user_id
+    var newAgent = yield $Agent.newAgent(newAgentData)
+
+    if (newAgent) {
+      this.status = 200
+      this.body = {
+        success: true,
+        agent: newAgent
+      }
+    } else {
+      this.status = 500
+      this.body = {
+        success: false,
+        agent: null
+      }
+    }
+}

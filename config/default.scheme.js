@@ -83,7 +83,26 @@ module.exports = {
       "query": protectAppointmentAdvisorid
     }
   },
+  "POST /protect/agentbook/agents": {
+    "request": {
+      "body": checkNewAgentFormBody
+    }
+  }
 };
+
+function checkNewAgentFormBody() {
+  let requiredParams = ['name'];
+  var paramsComplete = _.every(requiredParams, _.partial(_.has, this.request.body));
+  if (paramsComplete) {
+    return true
+  } else {
+    this.status = 400
+    this.body = {
+      error: 'invalid params'
+    }
+    return false
+  }
+}
 
 function protectAppointmentAdvisorid () {
   console.log(this.params)
