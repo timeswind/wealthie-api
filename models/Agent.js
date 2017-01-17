@@ -8,12 +8,12 @@ var AgentSchema = new Schema({
   name: { type: String, require: true },
   email: { type: String },
   phone: { type: String },
-  // referBy: { type: ObjectId, ref: 'User' },
+  referBy: { type: String },
   joinAt: { type: Date },
   isActive: { type: Boolean },
   fields: [{
     key: String,
-    data: String,
+    value: String,
     _id: false
   }],
 });
