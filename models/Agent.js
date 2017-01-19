@@ -11,6 +11,7 @@ var AgentSchema = new Schema({
   referBy: { type: String },
   joinAt: { type: Date },
   isActive: { type: Boolean },
+  note: { type: String },
   fields: [{
     key: String,
     value: String,

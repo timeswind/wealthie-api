@@ -6,6 +6,8 @@ var bodyparser = require('koa-bodyparser');
 var errorhandler = require('koa-errorhandler');
 var compress = require('koa-compress')
 var scheme = require('koa-scheme');
+var checkToken = require('./middlewares/checkToken');
+var internalPermissionCheck = require('./middlewares/internalPermissionCheck');
 var router = require('koa-frouter');
 var config = require('config-lite');
 var core = require('./lib/core');
@@ -13,39 +15,14 @@ var jwt = require('koa-jwt');
 var fs = require('fs');
 var publicKey = fs.readFileSync('platform.rsa.pub');
 
-app.use(function *(next){
-  let urlArray = this.request.url.split('/')
-  if (urlArray[1] !== 'public') {
-    let token = this.headers.authorization
-    if (!token) {
-      this.status = 400;
-      this.body = 'permission denied';
-    } else if (token.substring(0, 7) !== 'Bearer ') {
-      this.status = 400;
-      this.body = 'invalid token format';
-    } else {
-      yield next
-    }
-  } else {
-    yield next
-  }
-});
+app.use(checkToken());
 
-app.on('error', function(err) {
-  sentry.captureException(err);
+app.on('error', function(err, context) {
+  sentry.captureException(err, context);
 });
 
 app.use(jwt({ secret: publicKey, algorithm: 'RS256' }).unless({ path: [/^\/public/] }));
-app.use(function *(next){
-  let urlArray = this.request.url.split('/')
-  if (urlArray[1] === 'internal') {
-    if (this.state.user.role <= 100) {
-      this.status = 400;
-      this.body = 'Unauthorized';
-    }
-  }
-  yield next
-});
+app.use(internalPermissionCheck());
 app.use(errorhandler());
 app.use(bodyparser());
 app.use(logger());
@@ -53,7 +30,7 @@ app.use(scheme(config.schemeConf));
 app.use(compress())
 app.use(router(app, config.routerConf));
 app.use(function *(){
-  this.body = 'Hello World';
+  this.body = 'Resource not found';
 });
 
 

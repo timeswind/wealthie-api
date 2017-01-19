@@ -5,7 +5,7 @@ var $Agent = Models.$Agent;
 exports.get = function* () {
   var user_id = this.state.user.id
 
-  var agents = yield $Agent.getAgents(user_id, "manager name email phone joinAt fields isActive")
+  var agents = yield $Agent.getAgents(user_id, "manager name email phone referBy joinAt fields isActive note")
 
   if (agents) {
     this.status = 200
@@ -66,6 +66,25 @@ exports.put = function*() {
     this.body = {
       success: false,
       agent: null
+    }
+  }
+}
+
+exports.delete = function*() {
+  var user_id = this.state.user.id
+  var agent_id = this.request.query.id
+
+  var agentDeleted = yield $Agent.deleteAgent(agent_id)
+
+  if (agentDeleted) {
+    this.status = 200
+    this.body = {
+      success: true
+    }
+  } else {
+    this.status = 500
+    this.body = {
+      success: false
     }
   }
 }

@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mingtian Yang",
-  "license": "ISC",
   "dependencies": {
     "ali-oss": "^4.7.3",
     "bcrypt-nodejs": "0.0.3",
