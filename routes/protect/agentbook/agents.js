@@ -5,7 +5,7 @@ var $Agent = Models.$Agent;
 exports.get = function* () {
   var user_id = this.state.user.id
 
-  var agents = yield $Agent.getAgents(user_id, "manager name email phone referBy joinAt fields isActive note")
+  var agents = yield $Agent.getAgents(user_id, "manager name email phone referBy joinAt fields isActive note address")
 
   if (agents) {
     this.status = 200

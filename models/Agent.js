@@ -12,6 +12,7 @@ var AgentSchema = new Schema({
   joinAt: { type: Date },
   isActive: { type: Boolean },
   note: { type: String },
+  address: { type: String },
   fields: [{
     key: String,
     value: String,
