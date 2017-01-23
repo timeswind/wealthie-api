@@ -6,9 +6,9 @@ var ClientSchema = new Schema({
   advisor: { type: ObjectId, ref: 'User', required: true },
   user: { type: ObjectId, ref: 'User' },
   name: { type: String, required: true },
-  phone: { type: Number },
+  phone: { type: String },
   email: { type: String },
-  gender: { type: Number }, // 1 for male, 2 for female
+  gender: { type: String }, // 1 for male, 2 for female
   categories: { type: [Number] },
   education: { type: String },
   age: { type: Number },
@@ -20,6 +20,7 @@ var ClientSchema = new Schema({
     name: { type: String },
     detail: { type: String }
   }],
+  address: { type: String },
   note: { type: String },
   country: { type: String },
   city: { type: String },
@@ -27,7 +28,8 @@ var ClientSchema = new Schema({
   zip: { type: Number },
   fields: [{
     key: String,
-    data: String
+    value: String,
+    _id: false
   }]
 });
 

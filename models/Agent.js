@@ -17,7 +17,7 @@ var AgentSchema = new Schema({
     key: String,
     value: String,
     _id: false
-  }],
+  }]
 });
 
 

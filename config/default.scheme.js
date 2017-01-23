@@ -317,13 +317,7 @@ function checkEditListBody() {
   if (paramsComplete) {
     console.log(this.request.body)
     this.request.body = _.pick(body, ['_id', 'name', 'categories', 'phones', 'brief', 'experience', 'addresses', 'independent'])
-    if (!_.inRange(body.categories.length, 1, 4)) {
-      this.status = 400
-      this.body = {
-        error: 'You should choose at least 1 category but no more then 3'
-      }
-      return false
-    } else if (_.has(this.request.body, 'addresses')) {
+    if (_.has(this.request.body, 'addresses')) {
       let addresses = this.request.body.addresses
       if (_.isArray(addresses)) {
         var addresses_valid = true
@@ -371,14 +365,7 @@ function checkCreateUnclimedListBody() {
     let categories = body.categories;
     let phones = body.phones;
     let email = body.email;
-    if (!_.inRange(body.categories.length, 1, 4)) {
-      this.status = 400
-      this.body = {
-        error: 'You should choose at least 1 category but no more then 3'
-      }
-      return false
-    }
-    else if (_.isNull(phones)) {
+    if (_.isNull(phones)) {
       this.status = 400
       this.body = {
         error: 'Missing phone number'
@@ -412,14 +399,7 @@ function checkCreateListBody() {
     let categories = body.categories;
     let phones = body.phones;
     let brief = body.brief;
-    if (!_.inRange(body.categories.length, 1, 4)) {
-      this.status = 400
-      this.body = {
-        error: 'You should choose at least 1 category but no more then 3'
-      }
-      return false
-    }
-    else if (_.isNull(phones)) {
+    if (_.isNull(phones)) {
       this.status = 400
       this.body = {
         error: 'Missing phone number or bad format'
