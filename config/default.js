@@ -6,5 +6,5 @@ module.exports = {
     url: 'mongodb://127.0.0.1:27017/platform'
   },
   schemeConf: path.join(__dirname, './default.scheme'),
-  routerConf: 'routes'
+  routerConf: { wildcard: '_', root: 'routes' }
 };
