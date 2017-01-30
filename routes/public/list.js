@@ -47,8 +47,18 @@ exports.get = function* () {
     }
   } else {
     var list_id = this.request.query.id
-    listInfo = yield $List.getById(list_id, "name independent affiliation categories brief phones experience addresses advisor profileImage specialties certHeaders certifications minimums compensations")
+    listInfo = yield $List.getById(list_id, "name independent affiliation categories brief phones experience addresses advisor profileImage specialties certHeaders certifications minimums compensations public")
     if (listInfo) {
+      if (!('advisor' in listInfo)) {
+        delete listInfo.categories
+        delete listInfo.specialties
+        delete listInfo.brief
+        delete listInfo.certifications
+        delete listInfo.minimums
+        delete listInfo.compensations
+        delete listInfo.certHeaders
+        console.log('hit')
+      }
       let advisor_id = listInfo.advisor
       var monthCode
       var month_index
