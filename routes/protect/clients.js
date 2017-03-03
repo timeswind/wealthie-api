@@ -5,7 +5,7 @@ var $Client = Models.$Client;
 exports.get = function* () {
   var advisor_id = this.state.user.id
 
-  var clients = yield $Client.getClients(advisor_id, "name email phone gender married note categories age childrens job income address fields")
+  var clients = yield $Client.getClients(advisor_id, "name email phone gender married note categories age childrens job income address fields profile")
 
   if (clients) {
     this.status = 200
@@ -55,6 +55,13 @@ exports.put = function* () {
     delete updatedClientData.advisor
   }
   console.log(updatedClientData)
+
+  if (updatedClientData.profile && Object.keys(updatedClientData.profile).length > 0) {
+    var filtered = Object.keys(updatedClientData.profile).filter(function(key) {
+      return updatedClientData.profile[key] === true
+    });
+    updatedClientData.profile['rating'] = filtered.length
+  }
 
   var updatedClient = yield $Client.updateClient(client_id, updatedClientData)
   if (updatedClient) {

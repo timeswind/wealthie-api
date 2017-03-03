@@ -15,8 +15,6 @@ exports.post = function* () {
     return false;
   }
 
-  console.log(data)
-
   var newUser = yield $User.addUser(data);
 
   let payload = {

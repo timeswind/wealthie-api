@@ -28,7 +28,7 @@ exports.post = function* () {
 exports.get = function* () {
   var client_id = this.request.query.id
 
-  var client = yield $Client.getClient(client_id, "name email phone gender married note categories age childrens job income")
+  var client = yield $Client.getClient(client_id, "name email phone gender married note categories age childrens job income profile")
   var appointments = yield $Appointment.findByClientId(client_id)
   // var feedbacks = yield
   if (client) {

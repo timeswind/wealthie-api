@@ -30,7 +30,16 @@ var ClientSchema = new Schema({
     key: String,
     value: String,
     _id: false
-  }]
+  }],
+  profile: {
+    married: Boolean,
+    homeowner: Boolean,
+    income: Boolean,
+    ambitious: Boolean,
+    dissatisfied: Boolean,
+    coachable: Boolean,
+    rating: Number
+  }
 });
 
 ClientSchema.index({ advisor: 1, name: 1 }); // for advisor search client name
