@@ -104,6 +104,44 @@ exports.get = function* () {
   }
 };
 
+exports.put = function* () {
+
+  let advisor_id = this.state.user.id
+  let type = this.query.type
+  let calendar_id = this.query.calendar_id
+  let event_id = this.query.event_id
+  let start = this.query.start
+  let end = this.query.end
+
+  var calendar = yield $Calendar.getCalendarById(advisor_id, calendar_id)
+
+  if (calendar) {
+    eventIndex = _.findIndex(calendar.available, function(o) { return o._id == event_id; });
+    if (eventIndex >= 0) {
+      calendar.available[eventIndex].from = start
+      calendar.available[eventIndex].to = end
+      yield calendar.save()
+      this.status = 200
+      this.body = {
+        success: true,
+        calendar: calendar
+      }
+    } else {
+      this.status = 404
+      this.body = {
+        success: false,
+        error: 'Calendar not found'
+      }
+    }
+  } else {
+    this.status = 404
+    this.body = {
+      success: false,
+      error: 'Calendar not found'
+    }
+  }
+}
+
 exports.delete = function* () {
 
   let advisor_id = this.state.user.id
