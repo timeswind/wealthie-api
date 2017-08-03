@@ -13,6 +13,7 @@ var config = require('config-lite');
 var core = require('./lib/core');
 var jwt = require('koa-jwt');
 var fs = require('fs');
+var chatSocket = require('./lib/chat/chat_socket.js');
 var publicKey = fs.readFileSync('platform.rsa.pub');
 
 app.use(checkToken());
@@ -21,11 +22,11 @@ app.on('error', function(err, context) {
   sentry.captureException(err, context);
 });
 
-app.use(jwt({ secret: publicKey, algorithm: 'RS256' }).unless({ path: [/^\/public/] }));
+app.use(jwt({ secret: publicKey, algorithm: 'RS256' }).unless({ path: [/^\/socket\.io/, /^\/public/] }));
 app.use(internalPermissionCheck());
 app.use(errorhandler());
 app.use(bodyparser());
-app.use(logger());
+process.env.NODE_ENV !== 'production' && app.use(logger());
 app.use(scheme(config.schemeConf));
 app.use(compress())
 app.use(router(app, config.routerConf));
@@ -34,6 +35,9 @@ app.use(function *(){
 });
 
 
-app.listen(config.port, function () {
+
+const server = app.listen(config.port, function () {
   console.log('Server listening on: ', config.port);
 });
+
+chatSocket.start(server);

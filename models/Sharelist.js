@@ -15,18 +15,15 @@ var SharelistSchema = new Schema({
   gender: { type: String }, // 1 for male, 2 for female
   categories: { type: [Number] },
   age: { type: Number },
-
-  married: { type: Boolean },
-  ambitious: { type: Boolean },
-  dissatisfied: { type: Boolean },
-  coachable: { type: Boolean },
-  homeowner: { type: Boolean },
-  childrens: { type: Number },
-  income: { type: String },
-
-  note: { type: String },
-
-  rating: { type: Number },
+  profile: {
+    married: Boolean,
+    homeowner: Boolean,
+    income: Boolean,
+    ambitious: Boolean,
+    dissatisfied: Boolean,
+    coachable: Boolean,
+    rating: Number
+  },
   fields: [{
     key: String,
     value: String,
@@ -37,6 +34,5 @@ var SharelistSchema = new Schema({
 SharelistSchema.index({ advisor: 1, name: 1 }); // for advisor search client name
 SharelistSchema.index({ advisor: 1, email: 1}); // for advisor search client email
 SharelistSchema.index({ advisor: 1, categories: 1}); // for advisor search client categories
-SharelistSchema.index({ advisor: 1, rating: 1}); // for advisor search client categories
 
 module.exports = mongoose.model('Sharelist', SharelistSchema);
