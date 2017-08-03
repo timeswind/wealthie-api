@@ -51,8 +51,8 @@ exports.get = function* () {
     if (listInfo) {
 
       if (!('advisor' in listInfo)) {
-        delete listInfo.categories
-        delete listInfo.specialties
+        // delete listInfo.categories
+        // delete listInfo.specialties
         delete listInfo.brief
         delete listInfo.certifications
         delete listInfo.minimums
@@ -60,7 +60,7 @@ exports.get = function* () {
         delete listInfo.certHeaders
         console.log('hit')
       }
-      
+
       let advisor_id = listInfo.advisor
       var monthCode
       var month_index
