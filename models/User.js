@@ -9,6 +9,7 @@ var UserSchema = new Schema({
   email: { type: String, required: true },
   verify: { type: Boolean, default: false },
   password: { type: String, required: true },
+  registered: { type: Boolean, default: false },
   affiliation: { type: String },
   company: { type: ObjectId, ref: 'Company' },
   role: { type: Number, required: true }, //  1 for normal user, 2 for agents, 3 for independent, 11 for premium user, 000 for admin, 001 for blog manager

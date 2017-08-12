@@ -21,3 +21,5 @@ exports.FeedbackTemplate = require('./FeedbackTemplate');
 exports.Agent = require('./Agent');
 exports.Company = require('./Company');
 exports.Sharelist = require('./Sharelist');
+exports.Message = require('./Message');
+exports.Contactlist = require('./Contactlist');

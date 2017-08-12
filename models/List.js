@@ -33,7 +33,16 @@ var ListSchema = new Schema({
   email: { type: String },
   brief: { type: String },
   created_at: { type: Date, default: Date.now },
-  updated_at: { type: Date, default: Date.now }
+  updated_at: { type: Date, default: Date.now },
+  wechat: {
+    openid:{ type: String },
+    nickname: { type: String }, //用户昵称
+    sex: { type: Number }, // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
+    province: { type: String },
+    city: { type: String },
+    country: { type: String },
+    privilege: [{ type: String }]
+  }
 });
 
 ListSchema.index({ name: 1 })

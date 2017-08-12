@@ -58,7 +58,6 @@ exports.get = function* () {
         delete listInfo.minimums
         delete listInfo.compensations
         delete listInfo.certHeaders
-        console.log('hit')
       }
 
       let advisor_id = listInfo.advisor

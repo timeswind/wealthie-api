@@ -12,9 +12,8 @@ var router = require('koa-frouter');
 var config = require('config-lite');
 var core = require('./lib/core');
 var jwt = require('koa-jwt');
-var fs = require('fs');
 var chatSocket = require('./lib/chat/chat_socket.js');
-var publicKey = fs.readFileSync('platform.rsa.pub');
+var publicKey = require('fs').readFileSync('platform.rsa.pub');
 
 app.use(checkToken());
 
@@ -33,7 +32,6 @@ app.use(router(app, config.routerConf));
 app.use(function *(){
   this.body = 'Resource not found';
 });
-
 
 
 const server = app.listen(config.port, function () {
